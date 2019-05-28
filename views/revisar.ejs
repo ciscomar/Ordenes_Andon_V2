@@ -1,0 +1,94 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+<div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown">
+    <div class="container">
+        <img src="/img/TristoneLogo.png" class="rounded mx-auto d-block " alt="Tristone Flowtech">
+        <h1 class="display-4 text-center animated slow">Ordenes Ultra</h1>
+        <p class="lead text-center"></p>
+
+        <%
+        if(data.ordenStatus == "Abierta"){
+           classBtn = "danger"
+        }else if(data.ordenStatus == "Cerrada"){
+            classBtn ="success"
+        }else{
+            classBtn="info"
+        }
+        %>
+
+        <div class="card bg-light  ">
+            <div class=" card-header text-white bg-<%=classBtn%> text-center text-capitalize"><%=data.ordenStatus%></div>
+            <div class="card-body">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <td>ID</td>
+                            <td><%= data.id_orden%></td>
+                        </tr>
+                        <tr>
+                            <td>Nombre del creador</td>
+                            <td><%= data.nombreEmpleado%></td>
+                        </tr>
+                        <tr>
+                            <td>Numero de empleado</td>
+                            <td><%= data.numeroEmpleado%></td>
+                        </tr>
+                        <tr>
+                            <td>Parte afectada</td>
+                            <td><%= data.parteAfectada%></td>
+                        </tr>
+                        <tr>
+                            <td>Descripcion problema</td>
+                            <td><%= data.descripcionProblema%></td>
+                        </tr>
+                        <tr>
+                            <td>Fecha de generacion</td>
+                            <td><%= data.creacionFecha%></td>
+                        </tr>
+
+                        <tr class="text-center text-white">
+                                <td class="bg-dark" colspan="2"><%=data.departamento%></td>
+                            </tr>
+                        <tr class="text-center text-white">
+                            <td class="bg-info" colspan="2">Informacion atendida</td>
+                        </tr>
+                        <tr>
+                            <td>Atendida por</td>
+                            <td><%= data.nombrEncargado%></td>
+                        </tr>
+                        <tr>
+                            <td>Fecha atendida</td>
+                            <td><%= data.atendidaFecha%></td>
+                        </tr>
+                        <tr>
+                            <td>Acciones de atendida</td>
+                            <td><%= data.accionAtendida%></td>
+                        </tr>
+                        <tr class="text-center text-white">
+                            <td class="bg-success" colspan="2">Informacion cerrada</td>
+                        </tr>
+                        <tr>
+                            <td>Cerrada por</td>
+                            <td><%= data.nombreCierre%></td>
+                        </tr>
+                        <tr>
+                            <td>Fecha de cierre</td>
+                            <td><%= data.cierreFecha%></td>
+                        </tr>
+
+                        <tr>
+                            <td>Acciones de cierre</td>
+                            <td><%= data.accionCierre%></td>
+                        </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<% include footer %>
+</div>
+</body>
+
+</html>

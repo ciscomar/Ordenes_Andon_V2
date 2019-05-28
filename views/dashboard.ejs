@@ -1,0 +1,87 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+
+<div class="col-md-10 col-lg-10-2 col-xl-11">
+
+    <div class="row mt-1 animated fadeIn fast">
+        <div class="col-lg-6">
+            <img id="loginImg" src="/img/tristone_logo_head.png" class="rounded mx-auto d-block"
+                alt="Tristone Flowtech">
+        </div>
+    </div>
+
+    <form id="date" action="/dashboard_view/" method="POST">
+     
+
+
+            <%
+            const date = new Date(); 
+            const year = date.getFullYear();
+            const month = date.toLocaleString('en-us', { month: 'long' });
+            const yearMinus = year - 5;
+            %>
+
+            <div class="form-group col-lg-6">
+                    <label for="department_selected">Departamento</label>
+                    <select class="form-control" id="department_selected" name="department_selected" required>
+                        <!-- Value igual a id_departamento de la base de datos otplus tabla departamento -->
+                        <option value="" selected disabled hidden>Seleccionar</option required>
+                        <option value='1'>Mantenimiento</option>
+                        <option value='2'>Calidad</option>
+                        <option value='3'>Procesos</option>
+                        <option value='4'>RH</option>
+                        <option value='5'>Ingenieria</option>
+                    </select>
+                </div>
+
+            <div class="form-group col-lg-6">
+                <label for="month_selected">Mes</label>
+                <select class="form-control" id="month_selected" name="month_selected" required>
+                    <option value="" selected disabled hidden>Seleccionar</option>
+                    <option  value='1'>Janaury</option>
+                    <option value='2'>February</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                </select>
+            </div>
+
+
+
+            <div class="form-group col-lg-6">
+                    <label for="year_selected">Año</label>
+                    <select class="form-control" id="year_selected" name="year_selected" required>
+                        <option value="" selected disabled hidden>Seleccionar</option>
+                        <% for (let i = yearMinus ;i <= year; i++){%>
+                            <option><%=i%></h1>
+                        <% } %>
+                    </select>
+                </div>
+
+            <div class="row animated fadeIn fast">
+                <div class="col-lg-6">
+                    <div class="box-footer">
+                        <button id="login_button" type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+
+</div>
+<% include footer %>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+img {
+  width: 15%;
+  height: 15%;
+}
+
+#loginImg {
+  width: 35%;
+  height: 100%;
+}
+
+.icoSidebar {
+  color: #1879BE
+}
+
+.list-group-item:hover {
+  border-style: solid;
+  border-right-width: 4px;
+  border-right-color: #FCBF22;
+}
+
+.btnNavbar:hover {
+  background-color: #FCBF22;
+  border-block: #FCBF22;
+  ;
+}
+
+.sidebar-heading {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+/* Carousel styles */
+
+.carousel-inner img {
+  margin: auto;
+}
+
+.carousel-control-next, .carousel-control-prev, .carousel-indicators {
+  filter: invert(100%);
+}
+/* /Carousel styles */
+
+/* Tarjetas custom */
+
+.cdelay-1 {
+  animation-delay: .25s;
+}
+.cdelay-2 {
+  animation-delay: .5s;
+}
+.cdelay-3 {
+  animation-delay: .75s;
+}
+.cdelay-4 {
+  animation-delay: 1s;
+}
+
+.border-left-abiertas{
+  border-left: 5px solid rgb(255, 91, 91);
+  border-radius: 25px;
+}
+
+.border-left-atendidas{
+  border-left: 5px solid rgb(91, 203, 255);
+  border-radius: 25px;
+}
+
+.border-left-cerradas{
+  border-left: 5px solid rgb(111, 255, 92);
+  border-radius: 25px;
+}
+
+.border-left-excel{
+  border-left: 5px solid rgb(111, 255, 92);
+  border-radius: 25px;
+}
+
+.py-2{
+  height: 90px !important;
+}
+/* / Tarjetas custom */
+

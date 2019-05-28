@@ -1,0 +1,218 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+
+<!-- Contenedor Principal -->
+<div class="col-md-10 col-lg-10-2 col-xl-11">
+    <div class="row">
+        <div class="box-header col-lg-1">
+            <h3 class="box-title">Ordenes</h3>
+        </div>
+    </div>
+
+
+    <!-- Tarjetas -->
+    <div class="row">
+   <!-- Ordenes Atendidas -->
+   <div class="animated fadeInLeft fast col-xl-3 col-md-6 mb-4">
+    <div class="Card border-left-atendidas shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas</div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data.ordenesAtendidas%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ordenes Abiertas -->
+<div class="animated fadeInLeft fast cdelay-1 col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-abiertas shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.ordenesAbiertas%></div>
+                </div>
+                <div class="col-auto">
+                    <i class="far fa-clipboard fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ordenes Cerradas -->
+<div class="animated fadeInLeft fast cdelay-2 col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-cerradas shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.ordenesCerradas%></div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="animated fadeInLeft fast cdelay-3 col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-excel shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Decargar tabla <span
+                            class="fas fa-chevron-right"></span>
+                    </div>
+
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-success" onclick="exportTableToExcel('myTable')"><span
+                            class="fas fa-file-excel 2x"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+    <!-- /Tarjetas -->
+
+        <!-- Graficas -->
+        <h2 class="text-center text-secondary"><%=data.ordenesDepartamento%></h2>
+    <div class="horizontalBar ">
+        <div class="col-lg-12 ">
+
+            <div class="card " style="width: 100%; height: 250px;">
+                <div class="card-header text-center text-white bg-secondary">Fecha: <%=data.selectedMonth%>-<%=data.selectedYear %></div>
+                <div class="card-body">
+                    <canvas class="" id="chartMant1" width="95" height="10"></canvas>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="bar ">
+            <div class="col-lg-12 ">
+    
+                <div class="card " style="width: 100%; height: 300px;">
+                    <div class="card-header text-center text-white bg-secondary">Tiempo muerto en minutos</div>
+                    <div class="card-body">
+                        <canvas class="" id="chartMant2" width="95" height="15"></canvas>
+                    </div>
+                </div>
+            </div>
+        <!-- /Graficas -->
+
+<!-- Tabla -->
+<br>
+<br>
+<div class="table table-responsive mt-10" id="table">
+    <table id="myTable" class="table table-bordered table-striped">
+        <thead class="thead-dark">
+
+            <th>Maquina</th>
+            <th>Total problemas</th>
+            <th>Tiempo muerto Minutos</th>
+ 
+        </thead>
+
+        <tbody>
+            <tr>
+                <% for(var i = 0; i < data.ordenesSeleccion.length;i++ ){ %>
+                <td><%= data.ordenesSeleccion[i].maquina %></td>
+                <td><%= data.ordenesSeleccion[i].parte_afectada_count %></td>
+                <td><%= Math.floor(data.ordenesSeleccion[i].tiempo_muerto / 60); %></td>
+                
+            </tr>
+                <% }; %>
+        </tbody>
+    </table>
+</div>
+
+<!--/ Tabla -->
+
+    </div>
+    <!--/ Contenedor Principal  -->
+</div>
+<% include footer %>
+
+<script>
+
+
+
+    new Chart(document.getElementById("chartMant1"), {
+        type: 'horizontalBar',
+        data: {
+            labels: ["Atendidas","Abiertas","Cerradas"],
+            datasets: [
+                {
+                    label: "Ordenes",
+                    backgroundColor: ["rgb(91, 203, 255)", "rgb(255, 91, 91)", "rgb(111, 255, 92)"],
+                    data: [<%=data.ordenesAtendidas%>,<%=data.ordenesAbiertas%>,<%=data.ordenesCerradas%>]
+                }
+            ]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Ordenes Ultra'
+            }
+        }
+    });
+    
+let arr = []
+let tiempo_muerto = []
+
+<%for (var i = 0; i <data.ordenesSeleccion.length;i++){ %>
+    arr.push("<%=data.ordenesSeleccion[i].maquina%>")
+    tiempo_muerto.push("<%=Math.floor(data.ordenesSeleccion[i].tiempo_muerto/60)%>")
+
+<%}%>
+
+    new Chart(document.getElementById("chartMant2"), {
+        type: 'line',
+        data: {
+            labels:arr,
+            datasets: [
+                {
+                    label: "Min",
+                    backgroundColor: "rgba(91, 203, 255, 0.486)",
+                    data: tiempo_muerto,
+                    borderColor: "rgb(91, 203, 255)"
+                }
+            ]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Tiempo muerto'
+            }
+        }
+    });
+</script>
+
+
+
+</div>
+</body>
+
+</html>

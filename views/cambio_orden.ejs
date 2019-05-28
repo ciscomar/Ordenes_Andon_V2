@@ -1,0 +1,54 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+<div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown">
+    <div class="container">
+        <img src="/img/TristoneLogo.png" class="rounded mx-auto d-block" alt="Tristone Flowtech">
+        <h1 class="display-4 text-center">Ordenes Ultra</h1>
+        <p class="lead text-center">Su orden ha sido <%=accionTomada%> satisfactoriamente</p>
+        <div class="card bg-light  ">
+            <div class=" card-header text-white text-center bg-info" id="header_orden">Orden <%=accionTomada%></div>
+            <div class="card-body">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <td>ID</td>
+                            <td><%= data.id_orden%></td>
+                        </tr>
+                        <tr>
+                            <td><%=accionTomada.charAt(0).toUpperCase()+accionTomada.slice(1)%> por</td>
+                            <td><%=nombreEmpleado%></td>
+                        </tr>
+                        <tr>
+                            <td>Fecha</td>
+                            <td><%=formatted_current_date%></td>
+                        </tr>
+                        <tr>
+                            <td>Parte afectada</td>
+                            <td><%= parteAfectada%></td>
+                        </tr>
+                        <tr>
+                            <td>Clave de cierre</td>
+                            <td><%= clave_cierre%></td>
+                        </tr>
+                        <tr>
+                            <td>Actividades realizadas</td>
+                            <td><div  style="width: 800px; word-wrap: break-word"><%=actividades%></div></td>
+                        </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, '/');
+    }
+</script> 
+<% include footer %>
+</div>
+</body>
+
+</html>

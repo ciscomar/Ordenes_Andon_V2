@@ -1,0 +1,75 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+<div class="col-md-10 col-lg-10-2 col-xl-11">
+   <div class="row">
+    <div class="box-header col-lg-1">
+        <h3 class="box-title">Ordenes</h3>
+    </div>
+</div>
+
+<% include tarjetas %>
+
+</div>
+
+<div class="container">
+    <div class="col-lg-12">
+
+    </div>
+
+</div>
+
+
+
+<!-- /.box-header -->
+<div class="table table-responsive" id="table">
+    <table id="myTable" class="table table-bordered table-striped">
+        <thead class="thead-dark">
+
+            <th>ID</th>
+            <th>Departamento</th>
+            <th>Maquina</th>
+            <th>Parte afectada</th>
+            <th>Descripcion de la falla</th>
+            <th>Reportado por</th>
+            <th>Turno</th>
+            <th>Grupo</th>
+            <th>Fecha</th>
+            <th>Status</th>
+            <th>Tipo</th>
+
+        </thead>
+
+        <tbody>
+            <%if(data) { %>
+            <% for (var i = 0; i < data.length; i++) { %>
+            <%
+                              let date = data[i].fecha_hora
+                              let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+                              %>
+            <tr class="table_roww">
+                <td class="table_id"><%= data[i].id_orden %></td>
+                <td><%= data[i].nombre%></td>
+                <td><%= data[i].maquina %></td>
+                <td><%= data[i].componente %></td>
+                <td class="table_long_text"><%= data[i].descripcion_problema %></td>
+                <td><%= data[i].reporto %></td>
+                <td><%= data[i].turno %></td>
+                <td><%= data[i].grupo %></td>
+                <td><%= formatted_date %></td>
+                <td><%= data[i].status %></td>
+                <td><%= data[i].tipo_orden %></td>
+            </tr>
+            <% } %>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+
+<% include footer %>
+</div>
+</body>
+
+</html>

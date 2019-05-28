@@ -1,0 +1,100 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+<div class="col-md-6 col-lg-10-2">
+    <!-- general form elements -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Crear Orden de trabajo</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form action="/orden_guardada" method="POST">
+            <div class="box-body">
+                <!-- form start -->
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Empleado</label>
+                        <input readonly type="text" class="form-control" id="empleado" value="<%= data4%>"
+                            name="empleado">
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Gafete</label>
+                        <input readonly type="text" class="form-control" id="gafete" value="<%= data5%>" name="gafete">
+                    </div>
+                </div>
+                <!-- form start -->
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Departamento</label>
+                        <input readonly type="text" class="form-control" name="departamento" id="departamento"
+                            value="<%= data %>"></input>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Maquina</label>
+                        <input readonly type="text" class="form-control" name="maquina" id="maquina"
+                            value="<%= data2 %>"></input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Titulo">Componente</label>
+                    <select class="form-control" name="componente" required>
+                        <option value="" selected disabled hidden>Seleccionar</option required>
+                        <%if(data3) { %>
+                        <% for (var i = 0; i < data3.length; i++) { %>
+                        <option><%= data3[i].componente %></option>
+
+                        <% } %>
+                        <% } %>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Titulo">La orden genera tiempo muerto?</label>
+                    <select class="form-control" name="tmuerto" required>
+                        <option value="" selected disabled hidden>Seleccionar</option required>
+                        <option value="Correctivo">Si</option>
+                        <option value="Otra">No</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Turno</label>
+                        <select class="form-control" name="turno" required>
+                            <option value="" selected disabled hidden>Seleccionar</option required>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Grupo</label>
+                        <select class="form-control" name="grupo" required>
+                            <option value="" selected disabled hidden>Seleccionar</option required>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Descripcion">Descripcion de la falla</label>
+                    <textarea type="text" class="form-control " rows="3" cols="100" wrap="hard" name="descripcion" required></textarea>
+                </div>
+            </div>
+            <!-- /.box-body -->
+
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary"
+                    onclick="$('form').attr('action', '/guardar_orden');">Generar orden de trabajo</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.box -->
+
+    <% include footer %>
+</div>
+</body>
+
+</html>

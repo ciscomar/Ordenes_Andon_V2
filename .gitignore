@@ -74,3 +74,21 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# Modules #
+######################
+/node_modules
+node_modules/
+
+# Resources #
+######################
+public/resources
+public/resources/
+
+# Email #
+######################
+public/email/
+
+# Email #
+######################
+public/db/

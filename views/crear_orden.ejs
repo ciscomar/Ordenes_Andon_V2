@@ -1,0 +1,60 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+    <div class="col-md-6 col-lg-10-2">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Crear Orden de trabajo</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form action="/crear_orden2" method="POST">
+                <div class="box-body">
+            <!------->  
+            <div class="row">
+                        <div class="form-group col-lg-6">
+                                <label for="Titulo">Empleado</label>
+                                <input readonly type="text" class="form-control" id="empleado" value="<%= data3%>" name="empleado">
+                              </div>
+
+                              <div class="form-group  col-lg-6">
+                                <label for="Titulo">Gafete</label>
+                                <input readonly type="text" class="form-control" id="gafete" value="<%= data4%>" name="gafete">
+                              </div>
+                            </div>
+              <!------->                
+                    <div class="form-group">
+                        <label for="Titulo">Departamento</label>
+                        <select class="form-control" name="departamento" id="departamento" >
+
+                            <% for (var i = 0; i < data.length; i++) { %>
+                            <option><%= data[i].nombre %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="Titulo">Maquina</label>
+                        <select class="form-control" name="maquina" id="maquina" >
+                            <%if(data) { %>
+                            <% for (var i = 0; i < data2.length; i++) { %>
+                            <option><%= data2[i].nombre %></option>
+
+                            <% } %>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Siguiente</button>
+                    </div>
+            </form>
+        </div>
+        <!-- /.box -->
+
+        <% include footer %>
+    </div>
+  </body>
+  </html>
+  

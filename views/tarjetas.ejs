@@ -1,0 +1,106 @@
+<div class="row" id="tarjetas">
+
+    <!-- Ordenes Atendidas -->
+    <div class="animated fadeInLeft fast col-xl-3 col-md-6 mb-4">
+        <div class="Card border-left-atendidas shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas</div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data2.ordenesAtendidas%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ordenes Abiertas -->
+    <div class="animated fadeInLeft fast cdelay-1 col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-abiertas shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.ordenesAbiertas%></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="far fa-clipboard fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ordenes Cerradas -->
+    <div class="animated fadeInLeft fast cdelay-2 col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-cerradas shadow h-70 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.ordenesCerradas%></div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="animated fadeInLeft fast cdelay-3 col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-excel shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Decargar tabla <span
+                                class="fas fa-chevron-right"></span>
+                        </div>
+
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-success" onclick="exportTableToExcel('myTable')"><span
+                                class="fas fa-file-excel 2x"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4 mb-4">
+
+    <%
+    let total = data2.ordenesAbiertas + data2.ordenesAtendidas + data2.ordenesCerradas
+    let porcentajeAbiertas =    Math.round(data2.ordenesAbiertas  * 100 / total) *100/100
+    let porcentajeAtendidas =   Math.round(data2.ordenesAtendidas * 100 / total) *100/100
+    let porcentajeCerradas =    Math.round(data2.ordenesCerradas  * 100 / total) *100/100
+    %>
+
+    <div class="progress">
+        <div class="animated fadeInLeft fast progress-bar progress-bar-striped bg-info" role="progressbar"
+            style="width: <%=porcentajeAtendidas%>%" aria-valuenow="<%=porcentajeAtendidas%>" aria-valuemin="0"
+            aria-valuemax="<%=total%>"><%=porcentajeAtendidas%>%</div>
+    </div>
+    <div class="progress">
+        <div class="animated fadeInLeft fast cdelay-1 progress-bar progress-bar-striped bg-danger" role="progressbar"
+            style="width: <%=porcentajeAbiertas%>%" aria-valuenow="<%=porcentajeAbiertas%>" aria-valuemin="0"
+            aria-valuemax="<%=total%>"><%=porcentajeAbiertas%>%</div>
+    </div>
+    <div class="progress">
+        <div class="animated fadeInLeft fast cdelay-2 progress-bar progress-bar-striped bg-success" role="progressbar"
+            style="width: <%=porcentajeCerradas%>%" aria-valuenow="<%=porcentajeCerradas%>" aria-valuemin="0"
+            aria-valuemax="<%=total%>"><%=porcentajeCerradas%>%</div>
+    </div>
+
+</div>

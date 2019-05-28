@@ -1,0 +1,85 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+<div class="col-md-10 col-lg-10-2 col-xl-11">
+    <div class="box-header">
+        <h3 class="box-title">Ordenes del usuario <%= data3 %></h3>
+    </div>
+
+    <% include tarjetas %>
+
+    <!-- /.box-header -->
+    <div class="table table-responsive" id="table">
+        <table id="myTable" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+
+                <th>Revisar</th>
+                <th>ID</th>
+                <th>Clave</th>
+                <th>Departamento</th>
+                <th>Maquina</th>
+                <th>Parte afectada</th>
+                <th>Descripcion de la falla</th>
+                <th>Reportado por</th>
+                <th>Turno</th>
+                <th>Grupo</th>
+                <th>Fecha</th>
+                <th>Status</th>
+                <th>Tipo</th>
+
+
+            </thead>
+
+            <tbody>
+                <%if(data) { %>
+                <% for (var i = 0; i < data.length; i++) { %>
+                <%
+                              let date = data[i].fecha_hora
+                              let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+                              %>
+                <tr class="table_roww">
+
+                    <td>
+                        <form method="POST">
+
+                            <%
+                            if(data[i].status == "Abierta"){
+                               classBtn = "danger"
+                            }else if(data[i].status == "Cerrada"){
+                                classBtn ="success"
+                            }else{
+                                classBtn="info"
+                            }
+                            %>
+
+                            <button type="submit" formaction="/revisar/<%= data[i].id_orden%>"
+                                class="btn btn-<%=classBtn%>">Revisar</button>
+                        </form>
+                    </td>
+
+                    <td class="table_id"><%= data[i].id_orden %></td>
+                    <td><%= data[i].clave %></td>
+                    <td><%= data[i].nombre%></td>
+                    <td><%= data[i].maquina %></td>
+                    <td><%= data[i].componente %></td>
+                    <td class="table_long_text"><%= data[i].descripcion_problema %></td>
+                    <td><%= data[i].reporto %></td>
+                    <td><%= data[i].turno %></td>
+                    <td><%= data[i].grupo %></td>
+                    <td><%= formatted_date %></td>
+                    <td><%= data[i].status %></td>
+                    <td><%= data[i].tipo_orden %></td>
+                </tr>
+                <% } %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+
+    <% include footer %>
+</div>
+</body>
+
+</html>
