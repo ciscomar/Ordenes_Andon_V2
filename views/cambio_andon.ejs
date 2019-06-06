@@ -5,44 +5,38 @@
 <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown">
     <div class="container">
         <img src="/img/TristoneLogo.png" class="rounded mx-auto d-block" alt="Tristone Flowtech">
-        <h1 class="display-4 text-center">Ordenes Ultra</h1>
-        <p class="lead text-center">Su orden ha sido creada satisfactoriamente</p>
-
-
+        <h1 class="display-4 text-center">Sistema Andon</h1>
+        <p class="lead text-center">Su Andon ha sido <%=accionTomada%> satisfactoriamente</p>
         <div class="card bg-light  ">
-            <div class=" card-header text-white bg-success text-center">Orden creada</div>
+            <div class=" card-header text-white text-center bg-info" id="header_andon">Andon <%=accionTomada%></div>
             <div class="card-body">
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
                             <td>ID</td>
-                            <td><%= data.id_orden%></td>
+                            <td><%= data.id_andon%></td>
                         </tr>
                         <tr>
-                            <td>Departamento</td>
-                            <td><%= data.departamento%></td>
+                            <td><%=accionTomada.charAt(0).toUpperCase()+accionTomada.slice(1)%> por</td>
+                            <td><%=nombreEmpleado%></td>
                         </tr>
                         <tr>
-                            <td>Maquina</td>
-                            <td><%= data.maquina%></td>
+                            <td>Fecha</td>
+                            <td><%=formatted_current_date%></td>
                         </tr>
                         <tr>
-                            <td>Turno</td>
-                            <td><%= data.turno%></td>
-                        </tr>
-                        <tr>
-                            <td>Grupo</td>
-                            <td><%= data.grupo%></td>
+                            <td>Problema</td>
+                            <td><%= problema%></td>
                         </tr>
                         <tr>
                             <td>Clave de cierre</td>
-                            <td><%= data.clave%></td>
+                            <td><%= clave_cierre%></td>
+                        </tr>
+                        <tr>
+                            <td>Actividades realizadas</td>
+                            <td><div  style="width: 800px; word-wrap: break-word"><%=actividades%></div></td>
                         </tr>
 
-                        <tr>
-                            <td>Descripcion</td>
-                            <td><%= data.descripcion%></td>
-                        </tr>
                 </table>
             </div>
         </div>
@@ -52,7 +46,7 @@
     if (window.history.replaceState) {
         window.history.replaceState(null, null, '/');
     }
-</script>
+</script> 
 <% include footer %>
 </div>
 </body>

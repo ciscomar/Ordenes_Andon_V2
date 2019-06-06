@@ -1,6 +1,6 @@
 <div class="row" id="tarjetas">
 
-    <!-- Ordenes Atendidas -->
+    <!-- andon Atendidas -->
     <div class="animated fadeInLeft fast col-xl-3 col-md-6 mb-4">
         <div class="Card border-left-atendidas shadow h-100 py-2">
             <div class="card-body">
@@ -9,7 +9,7 @@
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas</div>
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data2.ordenesAtendidas%>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data2.andonAtendidas%>
                                 </div>
                             </div>
                         </div>
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <!-- Ordenes Abiertas -->
+    <!-- andon Abiertas -->
     <div class="animated fadeInLeft fast cdelay-1 col-xl-3 col-md-6 mb-4">
         <div class="card border-left-abiertas shadow h-100 py-2">
             <div class="card-body">
@@ -30,7 +30,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.ordenesAbiertas%></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.andonAbiertas%></div>
                     </div>
                     <div class="col-auto">
                         <i class="far fa-clipboard fa-2x text-gray-300"></i>
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <!-- Ordenes Cerradas -->
+    <!-- andon Cerradas -->
     <div class="animated fadeInLeft fast cdelay-2 col-xl-3 col-md-6 mb-4">
         <div class="card border-left-cerradas shadow h-70 py-2">
             <div class="card-body">
@@ -48,7 +48,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.ordenesCerradas%></div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.andonCerradas%></div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -81,10 +81,10 @@
 <div class="container-fluid mt-4 mb-4">
 
     <%
-    let total = data2.ordenesAbiertas + data2.ordenesAtendidas + data2.ordenesCerradas
-    let porcentajeAbiertas =    Math.round(data2.ordenesAbiertas  * 100 / total) *100/100
-    let porcentajeAtendidas =   Math.round(data2.ordenesAtendidas * 100 / total) *100/100
-    let porcentajeCerradas =    Math.round(data2.ordenesCerradas  * 100 / total) *100/100
+    let total = data2.andonAbiertas + data2.andonAtendidas + data2.andonCerradas
+    let porcentajeAbiertas =    Math.round(data2.andonAbiertas  * 100 / total) *100/100
+    let porcentajeAtendidas =   Math.round(data2.andonAtendidas * 100 / total) *100/100
+    let porcentajeCerradas =    Math.round(data2.andonCerradas  * 100 / total) *100/100
     %>
 
     <div class="progress">

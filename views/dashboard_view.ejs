@@ -7,14 +7,14 @@
 <div class="col-md-10 col-lg-10-2 col-xl-11">
     <div class="row">
         <div class="box-header col-lg-1">
-            <h3 class="box-title">Ordenes</h3>
+            <h3 class="box-title">Andons</h3>
         </div>
     </div>
 
 
     <!-- Tarjetas -->
     <div class="row">
-   <!-- Ordenes Atendidas -->
+   <!-- andon Atendidas -->
    <div class="animated fadeInLeft fast col-xl-3 col-md-6 mb-4">
     <div class="Card border-left-atendidas shadow h-100 py-2">
         <div class="card-body">
@@ -23,7 +23,7 @@
                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas</div>
                     <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data.ordenesAtendidas%>
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data.andonAtendidas%>
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<!-- Ordenes Abiertas -->
+<!-- andon Abiertas -->
 <div class="animated fadeInLeft fast cdelay-1 col-xl-3 col-md-6 mb-4">
     <div class="card border-left-abiertas shadow h-100 py-2">
         <div class="card-body">
@@ -44,7 +44,7 @@
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.ordenesAbiertas%></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.andonAbiertas%></div>
                 </div>
                 <div class="col-auto">
                     <i class="far fa-clipboard fa-2x text-gray-300"></i>
@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<!-- Ordenes Cerradas -->
+<!-- andon Cerradas -->
 <div class="animated fadeInLeft fast cdelay-2 col-xl-3 col-md-6 mb-4">
     <div class="card border-left-cerradas shadow h-100 py-2">
         <div class="card-body">
@@ -62,7 +62,7 @@
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.ordenesCerradas%></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.andonCerradas%></div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -95,7 +95,7 @@
     <!-- /Tarjetas -->
 
         <!-- Graficas -->
-        <h2 class="text-center text-secondary"><%=data.ordenesDepartamento%></h2>
+        <h2 class="text-center text-secondary"><%=data.andonDepartamento%></h2>
     <div class="horizontalBar ">
         <div class="col-lg-12 ">
 
@@ -127,7 +127,7 @@
     <table id="myTable" class="table table-bordered table-striped">
         <thead class="thead-dark">
 
-            <th>Maquina</th>
+            <th>Problemas Comunes</th>
             <th>Total problemas</th>
             <th>Tiempo muerto Minutos</th>
  
@@ -135,10 +135,10 @@
 
         <tbody>
             <tr>
-                <% for(var i = 0; i < data.ordenesSeleccion.length;i++ ){ %>
-                <td><%= data.ordenesSeleccion[i].maquina %></td>
-                <td><%= data.ordenesSeleccion[i].parte_afectada_count %></td>
-                <td><%= Math.floor(data.ordenesSeleccion[i].tiempo_muerto / 60); %></td>
+                <% for(var i = 0; i < data.andonSeleccion.length;i++ ){ %>
+                <td><%= data.andonSeleccion[i].andon_fallas %></td>
+                <td><%= data.andonSeleccion[i].problemas_comunes_count %></td>
+                <td><%= Math.floor(data.andonSeleccion[i].tiempo_muerto ); %></td>
                 
             </tr>
                 <% }; %>
@@ -163,9 +163,9 @@
             labels: ["Atendidas","Abiertas","Cerradas"],
             datasets: [
                 {
-                    label: "Ordenes",
+                    label: "Andons",
                     backgroundColor: ["rgb(91, 203, 255)", "rgb(255, 91, 91)", "rgb(111, 255, 92)"],
-                    data: [<%=data.ordenesAtendidas%>,<%=data.ordenesAbiertas%>,<%=data.ordenesCerradas%>]
+                    data: [<%=data.andonAtendidas%>,<%=data.andonAbiertas%>,<%=data.andonCerradas%>]
                 }
             ]
         },
@@ -173,7 +173,7 @@
             legend: { display: false },
             title: {
                 display: true,
-                text: 'Ordenes Ultra'
+                text: 'Andons'
             }
         }
     });
@@ -181,9 +181,9 @@
 let arr = []
 let tiempo_muerto = []
 
-<%for (var i = 0; i <data.ordenesSeleccion.length;i++){ %>
-    arr.push("<%=data.ordenesSeleccion[i].maquina%>")
-    tiempo_muerto.push("<%=Math.floor(data.ordenesSeleccion[i].tiempo_muerto/60)%>")
+<%for (var i = 0; i <data.andonSeleccion.length;i++){ %>
+    arr.push("<%=data.andonSeleccion[i].andon_fallas%>")
+    tiempo_muerto.push("<%=Math.floor(data.andonSeleccion[i].tiempo_muerto)%>")
 
 <%}%>
 

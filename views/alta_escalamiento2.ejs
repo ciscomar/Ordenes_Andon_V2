@@ -1,0 +1,115 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+<div class="col-md-6 col-lg-10-2">
+    <!-- general form elements -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Escalamiento</h3>
+        </div>
+    </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form action="/alta_escalamiento2" method="POST">
+            <div class="box-body">
+                    
+ 
+                    <div class="form-group">
+                        <label for="Titulo">Correo:</label>
+                        <select class="form-control" name="correo" id="correo" readonly>
+                            <option><%= correo%></option>
+                        </select>
+                    </div>
+
+
+                <div class="row">
+
+                    <div class="col-lg-5">
+
+
+                        <label for="Titulo">Departamentos:</label>
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="dep1" id="dep1" value="1"  <% if(data2 != undefined) {%> <% if(data2.dep1=='1') {%> checked <% } %> <% } %> >
+                            <label class="custom-control-label" for="dep1">Mantenimiento</label>
+                        </div>
+
+
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="dep2" id="dep2" value="1" <% if(data2 != undefined) {%> <% if(data2.dep2=='1') {%> checked <% } %><% } %>  >
+                            <label class="custom-control-label" for="dep2">Calidad</label>
+                        </div>
+
+
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="dep3" id="dep3" value="1" <% if(data2 != undefined) {%><% if(data2.dep3=='1') {%> checked <% } %><% } %> >
+                            <label class="custom-control-label" for="dep3">Procesos</label>
+                        </div>
+
+
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="dep4" id="dep4" value="1" <% if(data2 != undefined) {%><% if(data2.dep4=='1') {%> checked <% } %><% } %> >
+                            <label class="custom-control-label" for="dep4">Logistica</label>
+                        </div>
+
+
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="dep5" id="dep5" value="1" <% if(data2 != undefined) {%><% if(data2.dep5=='1') {%> checked <% } %><% } %> >
+                            <label class="custom-control-label" for="dep5">Ingenieria</label>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-5">
+                        <label for="Titulo">Escalamiento:</label>
+
+                        <div class="custom-control custom-switch mb-3">
+                                <input type="checkbox" class="custom-control-input" name="esc1" id="esc1" value="1" <% if(data2 != undefined) {%><% if(data2.esc1=='1') {%> checked <% } %><% } %> >
+                                <label class="custom-control-label" for="esc1">Creada</label>
+                            </div>
+
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="esc2" id="esc2" value="1" <% if(data2 != undefined) {%><% if(data2.esc2=='1') {%> checked <% } %><% } %>   >
+                            <label class="custom-control-label" for="esc2">15 Min Abierta</label>
+                        </div>
+
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="esc3" id="esc3" value="1" <% if(data2 != undefined) {%><% if(data2.esc3=='1') {%> checked <% } %><% } %> >
+                            <label class="custom-control-label" for="esc3">30 Min Abierta</label>
+                        </div>
+
+
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="esc4" id="esc4" value="1" <% if(data2 != undefined) {%><% if(data2.esc4=='1') {%> checked <% } %><% } %> >
+                            <label class="custom-control-label" for="esc4">60 Min Abierta</label>
+                        </div>
+                        <div class="custom-control custom-switch mb-3">
+                            <input type="checkbox" class="custom-control-input" name="esc5" id="esc5" value="1"  <% if(data2 != undefined) {%><% if(data2.esc5=='1') {%> checked <% } %><% } %> >
+                            <label class="custom-control-label" for="esc5">2 Hrs Abierta</label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="alert alert-success" role="alert" id="alert" hidden>
+                        A simple success alert—check it out!
+                      </div>
+            </div>
+                <div class="box-footer mt-4">
+                    <button id="escalamientoButton" type="submit" class="btn btn-primary"
+                        onclick="$('form').attr('action', '/guardar_escalamiento');">Guardar</button>
+                </div>
+            </form>
+            
+        </div>
+    
+</div>
+
+<!-- /.box -->
+
+<% include footer %>
+</div>
+</body>
+
+</html>

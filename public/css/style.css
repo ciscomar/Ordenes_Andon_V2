@@ -9,18 +9,18 @@ img {
 }
 
 .icoSidebar {
-  color: #1879BE
+  color: #f5d33b;
 }
 
 .list-group-item:hover {
   border-style: solid;
   border-right-width: 4px;
-  border-right-color: #FCBF22;
+  border-right-color: #0275d8;
 }
 
 .btnNavbar:hover {
-  background-color: #FCBF22;
-  border-block: #FCBF22;
+  background-color: #007bff;
+  border-block: #007bff;
   ;
 }
 
@@ -79,3 +79,6 @@ img {
 }
 /* / Tarjetas custom */
 
+div#danger-alert {
+  display: none;
+}

@@ -4,24 +4,26 @@ const app = express();
 mail_config = require('../email/conn.js');
 var mailer = require('express-mailer');
 mailer.extend(app, mail_config);
+var schedule = require('node-schedule');
 
 const db = require('../db/conn');
+const dbE = require('../db/connEmpleados');
 
-funcion.sendEmail= (dataEmail)=>{
+funcion.sendEmail = (dataEmail) => {
 
     //Enviar Correos
     app.mailer.send('email.ejs', {
 
         //Info General
         to: dataEmail.to,
-        cc:dataEmail.cc,
+        cc: dataEmail.cc,
         subject: dataEmail.subject,
         status: dataEmail.status,
         color: dataEmail.color,
-        id_orden: dataEmail.id_orden,
+        id_andon: dataEmail.id_andon,
         creador: dataEmail.creador,
         gafete: dataEmail.gafete,
-        maquina: dataEmail.maquina,
+        problema: dataEmail.problema,
         descripcion: dataEmail.descripcion,
         fecha: dataEmail.fecha,
         eclave: dataEmail.eclave,
@@ -38,7 +40,7 @@ funcion.sendEmail= (dataEmail)=>{
 
     }, function (err) {
         if (err) {
-console.log(err)
+            console.log(err)
             return;
         }
         console.log('mail sent')
@@ -46,342 +48,423 @@ console.log(err)
 
 };
 
-funcion.controllerDepartamentos=(callback)=>{
+funcion.controllerDepartamentos = (callback) => {
     db.query(`SELECT * FROM departamento`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
-        callback (null,result);
+            callback(err, null);
+        } else {
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerNombreDepartamento=(selectedDepartment,callback)=>{
+funcion.controllerNombreDepartamento = (selectedDepartment, callback) => {
     db.query(`SELECT nombre FROM departamento WHERE id_departamento = ${selectedDepartment} `, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result);
+            callback(err, null);
+        } else {
+
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerMaquinas=(callback)=>{
-    db.query(`SELECT * FROM maquinas`, function (err, result, fields) {
+funcion.controllerProblemas = (callback) => {
+    db.query(`SELECT descripcion FROM andon_fallas`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result);
+            callback(err, null);
+        } else {
+
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerIdMaquina=(maquina,callback)=>{
-    db.query(`SELECT id_maquina FROM maquinas WHERE nombre ='${maquina}'`, function (err, result, fields) {
+funcion.controllerIdProblema = (problema, callback) => {
+    db.query(`SELECT id FROM andon_fallas WHERE descripcion ='${problema}'`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result[0].id_maquina);
+            callback(err, null);
+        } else {
+
+            callback(null, result[0].id);
         }
     })
 
 }
 
-funcion.controllerNombreMaquina=(maquina,callback)=>{
-    db.query(`SELECT nombre FROM maquinas WHERE id_maquina= ${maquina}`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result[0].nombre);
-        }
-    })
 
-}
 
-funcion.controllerFamilia=(maquina,callback)=>{
-    db.query(`SELECT familia FROM maquinas WHERE nombre= '${maquina}'`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-
-        callback (null,result[0].familia);
-        }
-    })
-
-}
-
-funcion.controllerComponentes=(familia,callback)=>{
-    db.query(`SELECT componente FROM areas_componentes_afectados WHERE familia_maquina = '${familia}'`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result);
-        }
-    })
-
-}
-
-funcion.controllerIdComponente=(parteAfectada,familia,callback)=>{
-    db.query(`SELECT id_componente FROM areas_componentes_afectados WHERE componente ='${parteAfectada}' AND familia_maquina='${familia}'`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result[0].id_componente);
-        }
-    })
-
-}
-
-funcion.controllerIdDepartamento=(departamento,callback)=>{
+funcion.controllerIdDepartamento = (departamento, callback) => {
     db.query(`SELECT id_departamento FROM departamento WHERE nombre='${departamento}'`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result[0].id_departamento);
+            callback(err, null);
+        } else {
+
+            callback(null, result[0].id_departamento);
         }
     })
 
 }
 
-funcion.controllerOrdenesAbiertas=(callback)=>{
-    db.query(`SELECT id_orden FROM ordenes WHERE status='Abierta' OR status='atendida'`, function (err, result, fields) {
+funcion.controllerAndonAbiertas = (callback) => {
+    db.query(`SELECT id_andon FROM andon WHERE status != 'Cerrada'`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result);
+            callback(err, null);
+        } else {
+
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerCountOrdenes=(id_orden,callback)=>{
-    db.query(`SELECT COUNT( * ) AS count FROM ordenes WHERE id_orden=${id_orden}`, function (err, result, fields) {
+funcion.controllerCountAndon = (id_andon, callback) => {
+    db.query(`SELECT COUNT( * ) AS count FROM andon WHERE id_andon=${id_andon}`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result[0].count);
+            callback(null, result[0].count);
         }
     })
 
 }
 
-funcion.controllerStatusOrden=(id_orden,callback)=>{
-    db.query(`SELECT status FROM ordenes WHERE id_orden=${id_orden}`, function (err, result, fields) {
+funcion.controllerStatusAndon = (id_andon, callback) => {
+    db.query(`SELECT status FROM andon WHERE id_andon=${id_andon}`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result);
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerClaveOrden=(id_orden,callback)=>{
-    db.query(`SELECT clave FROM ordenes WHERE id_orden=${id_orden}`, function (err, result, fields) {
+funcion.controllerClaveAndon = (id_andon, callback) => {
+    db.query(`SELECT clave FROM andon WHERE id_andon=${id_andon}`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result);
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerParteAfectadaOrden=(id_orden,callback)=>{
-    db.query(`SELECT * FROM ordenes,areas_componentes_afectados 
-    WHERE ordenes.id_orden = ${id_orden}
-    AND ordenes.parte_afectada = areas_componentes_afectados.id_componente`, function (err, result, fields) {
+funcion.controllerProblemaAndon = (id_andon, callback) => {
+    db.query(`SELECT * FROM andon,andon_fallas 
+    WHERE andon.id_andon = ${id_andon}
+    AND andon.problemas_comunes = andon_fallas.id`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
+
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.controllerMaxIdAndon = (callback) => {
+    db.query(`SELECT MAX(id_andon) AS id FROM andon`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result);
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerMaxIdOrden=(callback)=>{
-    db.query(`SELECT MAX(id_orden) AS id FROM ordenes`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-
-        callback (null,result);
-        }
-    })
-
-}
-
-funcion.controllerInsertOrden=(id_dep,id_maquina,componente,descripcion,gafete,empleado,turno,grupo,clave,tipoOrden,callback)=>{
+funcion.controllerInsertAndon = (id_dep, id_prob, descripcion, gafete, clave, callback) => {
     db.query(`
-    INSERT INTO ordenes (departamento, maquina, parte_afectada, descripcion_problema, 
-    reporto, usuario_dominio, email, turno, grupo,  fecha_hora, clave, status, tipo_orden)
-    VALUES( '${id_dep}', '${id_maquina}', '${componente}', '${descripcion}', 
-    '${gafete}', '${empleado}', '${empleado + '@tristone.com'}', '${turno}', '${grupo}', NOW() , '${clave}', 
-    'Abierta', '${tipoOrden}')`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
+    INSERT INTO andon (departamento, problemas_comunes, fecha_inicio, tiempo_muerto, 
+    descripcion_problema, reporto, clave, status,escalamiento)
+    VALUES( '${id_dep}', '${id_prob}', NOW() ,'${0}', '${descripcion}','${gafete}', '${clave}', 'Abierta',0)`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
 
-        callback (null,result);
-        }
-    })
+                callback(null, result);
+            }
+        })
 
 }
 
-funcion.controllerUpdateOrdenA=(accionTomada,actividades,formatted_current_date,seconds,nombreEmpleado,id_orden,callback)=>{
-    db.query(`UPDATE ordenes SET 
+funcion.controllerUpdateAndonA = (accionTomada, actividades, formatted_current_date, nombreEmpleado, id_andon, callback) => {
+    db.query(`UPDATE andon SET 
     status= "${accionTomada}",
     acciones_atendida= "${actividades}" ,
     fecha_hora_atendida= "${formatted_current_date}" ,
-    tiempo_atendida= "${seconds}",
     usuario_atendida= "${nombreEmpleado}" 
-    WHERE id_orden = ${id_orden}`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
+    WHERE id_andon = ${id_andon}`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
 
-        callback (null,result);
-        }
-    })
+                callback(null, result);
+            }
+        })
 
 }
 
-funcion.controllerUpdateOrdenC=(accionTomada,actividades,formatted_current_date,seconds,nombreEmpleado,id_orden,callback)=>{
-    db.query(`UPDATE ordenes SET 
+funcion.controllerUpdateAndonC = (accionTomada, actividades, formatted_current_date, minutos, nombreEmpleado, id_andon, callback) => {
+    db.query(`UPDATE andon SET 
     status= "${accionTomada}",
     fecha_hora_cierre= "${formatted_current_date}",
     usuario_cierre= "${nombreEmpleado}",
     acciones_cierre= "${actividades}",
-    tiempo_muerto= "${seconds}",
-    area_real_afectada= "NULL",
-    parte_real_afectada= "NULL"
-    WHERE id_orden = ${id_orden}`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
+    tiempo_muerto= "${minutos}"
+    WHERE id_andon = ${id_andon}`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
 
-        callback (null,result);
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.controllerTablaAndon = (callback) => {
+    db.query(`SELECT * FROM andon, departamento, andon_fallas 
+    WHERE (andon.departamento = departamento.id_departamento) 
+    AND(andon.problemas_comunes= andon_fallas.id) ORDER BY status ASC`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
+
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.controllerRevisarAndon = (id_andon, callback) => {
+    db.query(`SELECT * FROM andon, departamento, andon_fallas 
+    WHERE (andon.departamento = departamento.id_departamento) 
+    AND(andon.problemas_comunes= andon_fallas.id) AND andon.id_andon = "${id_andon}"`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
+
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.controllerCountAndonAll = (as, status, callback) => {
+    db.query(`SELECT COUNT(*) AS ${as} FROM andon WHERE status="${status}"`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerTablaOrdenes=(callback)=>{
-    db.query(`SELECT * FROM ordenes, departamento, areas_componentes_afectados 
-    WHERE (ordenes.departamento = departamento.id_departamento) 
-    AND(ordenes.parte_afectada= areas_componentes_afectados.id_componente) ORDER BY id_orden DESC`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
+funcion.controllerHisotrialAndon = (numeroEmpleado, callback) => {
+    db.query(`SELECT * FROM andon, departamento, andon_fallas
+    WHERE (andon.departamento = departamento.id_departamento) 
+    AND(andon.problemas_comunes = andon_fallas.id) AND (andon.reporto ="${numeroEmpleado}") ORDER BY id_andon DESC `, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
 
-        callback (null,result);
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.controllerHistorialAndonStatus = (as, status, numeroEmpleado, callback) => {
+    db.query(`SELECT COUNT(*) AS ${as} FROM andon WHERE status ="${status}" AND reporto ="${numeroEmpleado}"`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerRevisarOrden=(id_orden, callback)=>{
-    db.query(`SELECT * FROM ordenes, departamento, areas_componentes_afectados 
-    WHERE (ordenes.departamento = departamento.id_departamento) 
-    AND(ordenes.parte_afectada= areas_componentes_afectados.id_componente) AND ordenes.id_orden = "${id_orden}"`, function (err, result, fields) {
+funcion.controllerDashCount = (as, selectedMonth, selectedYear, selectedDepartment, status, callback) => {
+    db.query(`SELECT COUNT(*) AS ${as} FROM andon  WHERE MONTH(fecha_inicio) = ${selectedMonth} AND  YEAR(fecha_inicio) = ${selectedYear} AND departamento = ${selectedDepartment} AND status ="${status}" `, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result);
+            callback(null, result);
         }
     })
 
 }
 
-funcion.controllerCountOrdenesAll=(as, status,callback)=>{
-    db.query(`SELECT COUNT(*) AS ${as} FROM ordenes WHERE status="${status}"`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-
-        callback (null,result);
-        }
-    })
-
-}
-
-funcion.controllerHisotrialOrdenes=(numeroEmpleado,callback)=>{
-    db.query(`SELECT * FROM ordenes, departamento, areas_componentes_afectados 
-    WHERE (ordenes.departamento = departamento.id_departamento) 
-    AND(ordenes.parte_afectada= areas_componentes_afectados.id_componente) AND (ordenes.reporto ="${numeroEmpleado}") ORDER BY id_orden DESC `, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-
-        callback (null,result);
-        }
-    })
-
-}
-
-funcion.controllerHistorialOrdenesStatus=(as, status,numeroEmpleado,callback)=>{
-    db.query(`SELECT COUNT(*) AS ${as} FROM ordenes WHERE status ="${status}" AND reporto ="${numeroEmpleado}"`, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-
-        callback (null,result);
-        }
-    })
-
-}
-
-funcion.controllerDashCount=(as, selectedMonth,selectedYear,selectedDepartment,status,callback)=>{
-    db.query(`SELECT COUNT(*) AS ${as} FROM ordenes  WHERE MONTH(fecha_hora) = ${selectedMonth} AND  YEAR(fecha_hora) = ${selectedYear} AND departamento = ${selectedDepartment} AND status ="${status}" `, function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-
-        callback (null,result);
-        }
-    })
-
-}
-
-funcion.controllerDashSeleccion=(selectedMonth,selectedYear,selectedDepartment,callback)=>{
+funcion.controllerDashSeleccion = (selectedMonth, selectedYear, selectedDepartment, callback) => {
     db.query(`
-    SELECT COUNT(id_orden) AS parte_afectada_count, maquinas.nombre as maquina, departamento.nombre as departamento , ordenes.tiempo_muerto
-    FROM otplus.ordenes, otplus.maquinas, otplus.departamento 
-    WHERE ordenes.maquina = maquinas.id_maquina 
-    AND ordenes.departamento = departamento.id_departamento 
-    AND MONTH(ordenes.fecha_hora) = ${selectedMonth}  
-    AND YEAR(ordenes.fecha_hora) = ${selectedYear} 
+    SELECT COUNT(id_andon) AS problemas_comunes_count, andon_fallas.descripcion as andon_fallas, departamento.nombre as departamento , andon.tiempo_muerto
+    FROM otplus.andon, otplus.andon_fallas, otplus.departamento 
+    WHERE andon.problemas_comunes = andon_fallas.id 
+    AND andon.departamento = departamento.id_departamento 
+    AND MONTH(andon.fecha_inicio) = ${selectedMonth}  
+    AND YEAR(andon.fecha_inicio) = ${selectedYear} 
     AND departamento.id_departamento = "${selectedDepartment}"
-    GROUP by ordenes.maquina
+    GROUP by andon.problemas_comunes
     `, function (err, result, fields) {
 
-        if (err) {
-            callback (err,null);
-        }else{
+            if (err) {
+                callback(err, null);
+            } else {
 
-        callback (null,result);
-        }
-    })
+                callback(null, result);
+            }
+        })
 
 }
 
+funcion.controllerEscalamiento = (correo, callback) => {
+    db.query(`SELECT * FROM andon_escalamiento WHERE correo='${correo}'`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result[0]);
+        }
+    })
+}
+
+funcion.controllerEscalamientoAll = (callback) => {
+    db.query(`SELECT * FROM andon_escalamiento ORDER BY correo`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+}
+
+funcion.controllerInsertEscalamiento = (dep1, dep2, dep3, dep4, dep5, esc1, esc2, esc3, esc4, esc5, correo, callback) => {
+
+    db.query(`INSERT INTO andon_escalamiento (correo, dep1, dep2, dep3, dep4, dep5, esc1, esc2, esc3, esc4, esc5)
+    VALUES('${correo}',${dep1}, ${dep2}, ${dep3}, ${dep4}, ${dep5}, ${esc1}, ${esc2}, ${esc3}, ${esc4}, ${esc5})
+    ON DUPLICATE KEY UPDATE dep1 = VALUES(dep1), dep2 = VALUES(dep2), dep3 = VALUES(dep3), dep4 = VALUES(dep4), dep5 = VALUES(dep5), 
+    esc1 = VALUES(esc1), esc2 = VALUES(esc2), esc3 = VALUES(esc3), esc4 = VALUES(esc4), esc5 = VALUES(esc5)`, function (err, result, fields) {
+            if (err) {
+
+                callback(err, null);
+
+            } else {
+
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.sendEscalamiento = (esc, nextesc, esc1, tiempo) => {
+
+    //Select andon mas antigua que este abierta y escalamiento sea cero
+    db.query(`SELECT * FROM andon WHERE status !='Cerrada' && escalamiento=${esc} ORDER BY id_andon LIMIT 1`, function (err, result, fields) {
+        if (err) {
+            console.log(err)
+        } else {
+
+
+            if (result.length > 0) {
+                
+                //Select Fecha de inicio en la andon abierta
+                var fechaInicio = result[0].fecha_inicio;
+                var fechaActual = new Date();
+                var seconds = (fechaActual.getTime() - fechaInicio.getTime()) / 1000;
+                minutos = (seconds / 60);
+                id_andon = result[0].id_andon;
+                reporto = result[0].reporto;
+                problema = result[0].problemas_comunes;
+                descripcion = result[0].descripcion_problema;
+                andonFecha = result[0].fecha_inicio;
+                usuarioAtendida = result[0].usuario_atendida;
+                fechaAtendida = result[0].fecha_hora_atendida;
+                accionAtendidaC = result[0].acciones_atendida;
+                usuarioCerrada = result[0].usuario_cierre;
+                fechacierre = result[0].fecha_hora_cierre;
+                accionCierre = result[0].acciones_cierre;
+
+                //Select Nombre para crador del andon 
+                dbE.query(`SELECT emp_Nombre FROM del_empleados WHERE emp_id=${reporto}`, function (err, resultNombre, fields) {
+
+                    db.query(`SELECT descripcion FROM andon_fallas WHERE id=${problema}`, function (err, resultProblema, fields) {
+
+                        //escalamiento minutos
+                        if (minutos > tiempo) {
+                            //update escalamiento a siguiente escalamiento
+                            db.query(`UPDATE andon SET escalamiento='${nextesc}' WHERE id_andon=${result[0].id_andon} `, function (err, result, fields) {
+ 
+                            });
+
+                            db.query(`SELECT correo FROM andon_escalamiento WHERE dep${result[0].departamento}=1 AND ${esc1}=1`, function (err, resultc, fields) {
+
+                                for (var i = 0; i < resultc.length; i++) {
+
+                                    to = resultc[i].correo;
+                                    cc = '';
+                                    subject = 'Andon ' + id_andon + ' -Abierta- '+ tiempo+' Min';
+                                    status = 'Abierta: ' + tiempo +' Min';
+                                    color = '#b30000';
+                                    id_andon = id_andon;
+                                    creador = resultNombre[0].emp_Nombre;
+                                    gafete = reporto;
+                                    problema = resultProblema[0].descripcion;
+                                    descripcion = descripcion;
+                                    fecha = andonFecha;
+                                    eclave = '';
+                                    empleadoAtendida = usuarioAtendida;
+                                    fechaAtendida = fechaAtendida;
+                                    accionAtendida = accionAtendidaC;
+                                    empleadoCerrada = usuarioCerrada;
+                                    fechaCerrada = fechacierre;
+                                    accionCerrada = accionCierre;
+
+                                    dataEmail = {
+                                        to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
+                                        fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
+                                    }
+
+                                    funcion.sendEmail(dataEmail);
+
+                                }
+                            });
+                        }
+                    });
+                });
+            }
+        }
+    });
+};
+
+
+var j = schedule.scheduleJob('1 * * * * *', function () {
+
+    //(escactual,nextesc,escbd,tiempoescalamiento)
+
+    funcion.sendEscalamiento(0, 1, 'esc1', 1);
+    funcion.sendEscalamiento(1, 2, 'esc2', 3);
+    funcion.sendEscalamiento(2, 3, 'esc3', 5);
+    funcion.sendEscalamiento(3, 4, 'esc4', 7);
+    funcion.sendEscalamiento(4, 5, 'esc5', 9);
+
+});
 
 
 module.exports = funcion;

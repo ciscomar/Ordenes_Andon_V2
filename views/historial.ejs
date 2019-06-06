@@ -4,7 +4,7 @@
 
 <div class="col-md-10 col-lg-10-2 col-xl-11">
     <div class="box-header">
-        <h3 class="box-title">Ordenes del usuario <%= data3 %></h3>
+        <h3 class="box-title">Andons del usuario <%= data3 %></h3>
     </div>
 
     <% include tarjetas %>
@@ -18,15 +18,12 @@
                 <th>ID</th>
                 <th>Clave</th>
                 <th>Departamento</th>
-                <th>Maquina</th>
-                <th>Parte afectada</th>
+                <th>Problema</th>
                 <th>Descripcion de la falla</th>
                 <th>Reportado por</th>
-                <th>Turno</th>
-                <th>Grupo</th>
                 <th>Fecha</th>
+                <th>Tiempo Muerto</th>
                 <th>Status</th>
-                <th>Tipo</th>
 
 
             </thead>
@@ -35,7 +32,7 @@
                 <%if(data) { %>
                 <% for (var i = 0; i < data.length; i++) { %>
                 <%
-                              let date = data[i].fecha_hora
+                              let date = data[i].fecha_inicio
                               let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
                               %>
                 <tr class="table_roww">
@@ -53,23 +50,30 @@
                             }
                             %>
 
-                            <button type="submit" formaction="/revisar/<%= data[i].id_orden%>"
+                            <button type="submit" formaction="/revisar/<%= data[i].id_andon%>"
                                 class="btn btn-<%=classBtn%>">Revisar</button>
                         </form>
                     </td>
 
-                    <td class="table_id"><%= data[i].id_orden %></td>
+                    <td class="table_id"><%= data[i].id_andon %></td>
                     <td><%= data[i].clave %></td>
                     <td><%= data[i].nombre%></td>
-                    <td><%= data[i].maquina %></td>
-                    <td><%= data[i].componente %></td>
+                    <td><%= data[i].descripcion %></td>
                     <td class="table_long_text"><%= data[i].descripcion_problema %></td>
                     <td><%= data[i].reporto %></td>
-                    <td><%= data[i].turno %></td>
-                    <td><%= data[i].grupo %></td>
                     <td><%= formatted_date %></td>
+
+                    <td>
+                            <%if(data[i].status !='Cerrada') { %>
+                            <div class="time-elapsed"></div>
+                            <div class="date_start_time" data-date-time="<%= data[i].fecha_inicio %>"></div>
+                            <div class="alerts-wrapper"></div>
+                            <% }else { %>
+                                <%= data[i].tiempo_muerto %> minutos
+                            <% } %>
+                    </td>
+
                     <td><%= data[i].status %></td>
-                    <td><%= data[i].tipo_orden %></td>
                 </tr>
                 <% } %>
                 <% } %>

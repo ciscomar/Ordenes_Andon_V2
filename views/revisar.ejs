@@ -5,13 +5,13 @@
 <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown">
     <div class="container">
         <img src="/img/TristoneLogo.png" class="rounded mx-auto d-block " alt="Tristone Flowtech">
-        <h1 class="display-4 text-center animated slow">Ordenes Ultra</h1>
+        <h1 class="display-4 text-center animated slow">Sistema Andon</h1>
         <p class="lead text-center"></p>
 
         <%
-        if(data.ordenStatus == "Abierta"){
+        if(data.andonStatus == "Abierta"){
            classBtn = "danger"
-        }else if(data.ordenStatus == "Cerrada"){
+        }else if(data.andonStatus == "Cerrada"){
             classBtn ="success"
         }else{
             classBtn="info"
@@ -19,13 +19,13 @@
         %>
 
         <div class="card bg-light  ">
-            <div class=" card-header text-white bg-<%=classBtn%> text-center text-capitalize"><%=data.ordenStatus%></div>
+            <div class=" card-header text-white bg-<%=classBtn%> text-center text-capitalize"><%=data.andonStatus%></div>
             <div class="card-body">
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
                             <td>ID</td>
-                            <td><%= data.id_orden%></td>
+                            <td><%= data.id_andon%></td>
                         </tr>
                         <tr>
                             <td>Nombre del creador</td>
@@ -36,8 +36,8 @@
                             <td><%= data.numeroEmpleado%></td>
                         </tr>
                         <tr>
-                            <td>Parte afectada</td>
-                            <td><%= data.parteAfectada%></td>
+                            <td>Problema</td>
+                            <td><%= data.problema%></td>
                         </tr>
                         <tr>
                             <td>Descripcion problema</td>

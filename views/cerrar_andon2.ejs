@@ -5,7 +5,7 @@
 <div class="col-md-6 col-lg-10-2">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Cerrar Orden de trabajo</h3>
+            <h3 class="box-title">Cerrar Andon</h3>
             <label id="clave_cerrar2" hidden><%=id_clave%></label></div>
             <label id="status_cerrar2" hidden><%=status%></label></div>
         <!-- form start -->
@@ -27,9 +27,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="Titulo">Numero de orden</label>
-                        <input readonly type="text" class="form-control" name="id_orden" id="id_orden"
-                            value="<%=id_orden%>">
+                        <label for="Titulo">Numero de Andon</label>
+                        <input readonly type="text" class="form-control" name="id_andon" id="id_andon"
+                            value="<%=id_andon%>">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="Titulo">Fecha: (YYYY-MM-DD)</label>
@@ -57,23 +57,23 @@
                         <input type="text" class="form-control" name="clave_cierre" id="clave_cierre" value="">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="Titulo">Parte afectada</label>
-                        <input readonly type="text" class="form-control" name="parteAfectada" id="parteAfectada"
-                            value="<%=parteAfectada%>">
+                        <label for="Titulo">Problema Comun:</label>
+                        <input readonly type="text" class="form-control" name="problema" id="problema"
+                            value="<%=problema%>">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="Descripcion">Actividades realizadas(opcional):</label>
+                    <label for="Descripcion">Actividades realizadas:</label>
                     <textarea type="text" class="form-control " rows="3" name="actividades" required></textarea>
                 </div>
                 
             </div>
-            <button formAction="/cambio_orden/Atendida" type="submit" class="btn btn-primary btn-block" id="atender"
+            <button formAction="/cambio_andon/Atendida" type="submit" class="btn btn-primary btn-block" id="atender"
                 >Atender
-                Orden</button>
-            <button formAction="/cambio_orden/Cerrada" type="submit" class="btn btn-success btn-block" id="cerrar"
+                Andon</button>
+            <button formAction="/cambio_andon/Cerrada" type="submit" class="btn btn-success btn-block" id="cerrar"
                 disabled>Cerrar
-                Orden</button>
+                Andon</button>
 
         </form>
     </div>

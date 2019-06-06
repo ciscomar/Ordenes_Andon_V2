@@ -2,93 +2,68 @@ const funcionE = {};
 const dbE = require('../db/connEmpleados');
 const db = require('../db/conn');
 
-funcionE.empleadosCorreo= (gafete, callback)=>{
+funcionE.empleadosCorreo = (gafete, callback) => {
 
     dbE.query(`SELECT emp_correo from del_empleados WHERE emp_id= ${gafete}`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result[0].emp_correo);
+            callback(null, result[0].emp_correo);
         }
     })
 
 }
 
+funcionE.empleadosCorreoDep = (gafeteAcc, id_depE, callback) => {
 
-funcionE.empleadosCount=(gafete,callback)=>{
-    dbE.query(`SELECT COUNT( * ) AS count FROM del_empleados WHERE emp_id=${gafete}`, function (err, result, fields) {
+    dbE.query(`SELECT emp_correo from del_empleados WHERE emp_id= ${gafeteAcc} AND emp_dep=${id_depE}`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result[0].count);
+            callback(null, result);
         }
     })
 
 }
 
-funcionE.empleadosNombre=(gafete,callback)=>{
+funcionE.empleadosNombre = (gafete, callback) => {
     dbE.query(`SELECT emp_nombre FROM del_empleados WHERE emp_id=${gafete}`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
-            
-        callback (null,result[0].emp_nombre);
+            callback(err, null);
+        } else {
+
+            callback(null, result[0].emp_nombre);
         }
     })
 
 }
 
-funcionE.empleadosAccess2=(callback)=>{
-    dbE.query(`SELECT acc_id FROM del_accesos WHERE acc_ultra=2`, function (err, result, fields) {
+funcionE.empleadosTodos = (callback) => {
+
+    dbE.query(`SELECT emp_correo FROM del_empleados ORDER BY emp_correo ASC`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result);
+            callback(null, result);
         }
     })
 
 }
 
-funcionE.empleadosCorreoDep= (gafeteAcc,id_depE, callback)=>{
+funcionE.empleadosAccessAll = (acc_andon, sign, callback) => {
 
-    dbE.query(`SELECT emp_correo from del_empleados WHERE emp_id= ${gafeteAcc} AND emp_dep=${id_depE}` , function (err, result, fields) {
+    dbE.query(`SELECT acc_id FROM del_accesos WHERE acc_andon ${sign}${acc_andon}`, function (err, result, fields) {
         if (err) {
-            callback (err,null);
-        }else{
+            callback(err, null);
+        } else {
 
-        callback (null,result);
+            callback(null, result);
         }
     })
 
 }
-
-funcionE.empleadosRevisarAccess1= (numeroEmpleado, callback)=>{
-
-    dbE.query(`SELECT COUNT( * ) AS count FROM del_accesos WHERE acc_id=${numeroEmpleado}` , function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-        callback (null,result[0].count);
-        }
-    })
-
-}
-
-funcionE.empleadosRevisarAccess2= (numeroEmpleado,acc_ultra, callback)=>{
-
-    dbE.query(`SELECT COUNT( * ) AS count FROM del_accesos WHERE acc_id=${numeroEmpleado} AND acc_ultra=${acc_ultra} ` , function (err, result, fields) {
-        if (err) {
-            callback (err,null);
-        }else{
-        callback (null,result[0].count);
-        }
-    })
-
-}
-
-
 
 module.exports = funcionE;
