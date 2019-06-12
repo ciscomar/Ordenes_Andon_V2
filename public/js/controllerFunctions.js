@@ -376,78 +376,85 @@ funcion.controllerInsertEscalamiento = (dep1, dep2, dep3, dep4, dep5, esc1, esc2
 funcion.sendEscalamiento = (esc, nextesc, esc1, tiempo) => {
 
     //Select andon mas antigua que este abierta y escalamiento sea cero
-    db.query(`SELECT * FROM andon WHERE status !='Cerrada' && escalamiento=${esc} ORDER BY id_andon LIMIT 1`, function (err, result, fields) {
+    db.query(`SELECT * FROM andon WHERE status !='Cerrada' && escalamiento=${esc}`, function (err, result, fields) {
+
         if (err) {
             console.log(err)
+
         } else {
 
-
             if (result.length > 0) {
-                
-                //Select Fecha de inicio en la andon abierta
-                var fechaInicio = result[0].fecha_inicio;
-                var fechaActual = new Date();
-                var seconds = (fechaActual.getTime() - fechaInicio.getTime()) / 1000;
-                minutos = (seconds / 60);
-                id_andon = result[0].id_andon;
-                reporto = result[0].reporto;
-                problema = result[0].problemas_comunes;
-                descripcion = result[0].descripcion_problema;
-                andonFecha = result[0].fecha_inicio;
-                usuarioAtendida = result[0].usuario_atendida;
-                fechaAtendida = result[0].fecha_hora_atendida;
-                accionAtendidaC = result[0].acciones_atendida;
-                usuarioCerrada = result[0].usuario_cierre;
-                fechacierre = result[0].fecha_hora_cierre;
-                accionCierre = result[0].acciones_cierre;
+                for (let y = 0; y < result.length; y++) {
 
-                //Select Nombre para crador del andon 
-                dbE.query(`SELECT emp_Nombre FROM del_empleados WHERE emp_id=${reporto}`, function (err, resultNombre, fields) {
+                    //Select Fecha de inicio en la andon abierta
+                    var fechaInicio = result[y].fecha_inicio;
+                    var fechaActual = new Date();
+                    var seconds = (fechaActual.getTime() - fechaInicio.getTime()) / 1000;
+                    minutos = (seconds / 60);
 
-                    db.query(`SELECT descripcion FROM andon_fallas WHERE id=${problema}`, function (err, resultProblema, fields) {
+                    //escalamiento minutos
+                    if (minutos > tiempo) {
+                        //update escalamiento a siguiente escalamiento
+                        db.query(`UPDATE andon SET escalamiento='${nextesc}' WHERE id_andon=${result[y].id_andon} `, function (err, resultescal, fields) {
 
-                        //escalamiento minutos
-                        if (minutos > tiempo) {
-                            //update escalamiento a siguiente escalamiento
-                            db.query(`UPDATE andon SET escalamiento='${nextesc}' WHERE id_andon=${result[0].id_andon} `, function (err, result, fields) {
- 
-                            });
+                            db.query(`SELECT correo FROM andon_escalamiento WHERE dep${result[y].departamento}=1 AND ${esc1}=1`, function (err, resultc, fields) {
 
-                            db.query(`SELECT correo FROM andon_escalamiento WHERE dep${result[0].departamento}=1 AND ${esc1}=1`, function (err, resultc, fields) {
+                                for (let i = 0; i < resultc.length; i++) {
 
-                                for (var i = 0; i < resultc.length; i++) {
+                                    //Select Nombre para crador del andon 
+                                    dbE.query(`SELECT emp_Nombre FROM del_empleados WHERE emp_id=${result[y].reporto}`, function (err, resultNombre, fields) {
 
-                                    to = resultc[i].correo;
-                                    cc = '';
-                                    subject = 'Andon ' + id_andon + ' -Abierta- '+ tiempo+' Min';
-                                    status = 'Abierta: ' + tiempo +' Min';
-                                    color = '#b30000';
-                                    id_andon = id_andon;
-                                    creador = resultNombre[0].emp_Nombre;
-                                    gafete = reporto;
-                                    problema = resultProblema[0].descripcion;
-                                    descripcion = descripcion;
-                                    fecha = andonFecha;
-                                    eclave = '';
-                                    empleadoAtendida = usuarioAtendida;
-                                    fechaAtendida = fechaAtendida;
-                                    accionAtendida = accionAtendidaC;
-                                    empleadoCerrada = usuarioCerrada;
-                                    fechaCerrada = fechacierre;
-                                    accionCerrada = accionCierre;
+                                        db.query(`SELECT descripcion FROM andon_fallas WHERE id=${result[y].problemas_comunes}`, function (err, resultProblema, fields) {
 
-                                    dataEmail = {
-                                        to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                                        fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
-                                    }
+                                            var fechaInicio = result[y].fecha_inicio;
+                                            var fechaActual = new Date();
+                                            var seconds = (fechaActual.getTime() - fechaInicio.getTime()) / 1000;
+                                            minutos = (seconds / 60);
+                                            id_andon = result[y].id_andon;
+                                            reporto = result[y].reporto;
+                                            problema = result[y].problemas_comunes;
+                                            descripcion = result[y].descripcion_problema;
+                                            andonFecha = result[y].fecha_inicio;
+                                            usuarioAtendida = result[y].usuario_atendida;
+                                            fechaAtendida = result[y].fecha_hora_atendida;
+                                            accionAtendidaC = result[y].acciones_atendida;
+                                            usuarioCerrada = result[y].usuario_cierre;
+                                            fechacierre = result[y].fecha_hora_cierre;
+                                            accionCierre = result[y].acciones_cierre;
 
-                                    funcion.sendEmail(dataEmail);
+                                            to = resultc[i].correo;
+                                            cc = '';
+                                            subject = 'Andon ' + id_andon + ' -Abierta- ' + tiempo + ' Min';
+                                            status = 'Abierta: ' + tiempo + ' Min';
+                                            color = '#b30000';
+                                            id_andon = id_andon;
+                                            creador = resultNombre[0].emp_Nombre;
+                                            gafete = reporto;
+                                            problema = resultProblema[0].descripcion;
+                                            descripcion = descripcion;
+                                            fecha = andonFecha;
+                                            eclave = '';
+                                            empleadoAtendida = usuarioAtendida;
+                                            fechaAtendida = fechaAtendida;
+                                            accionAtendida = accionAtendidaC;
+                                            empleadoCerrada = usuarioCerrada;
+                                            fechaCerrada = fechacierre;
+                                            accionCerrada = accionCierre;
 
+                                            dataEmail = {
+                                                to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
+                                                fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
+                                            }
+
+                                            funcion.sendEmail(dataEmail);
+
+                                        });
+                                    })
                                 }
                             });
-                        }
-                    });
-                });
+                        });
+                    }
+                }
             }
         }
     });
@@ -459,10 +466,10 @@ var j = schedule.scheduleJob('1 * * * * *', function () {
     //(escactual,nextesc,escbd,tiempoescalamiento)
 
     funcion.sendEscalamiento(0, 1, 'esc1', 1);
-    funcion.sendEscalamiento(1, 2, 'esc2', 3);
-    funcion.sendEscalamiento(2, 3, 'esc3', 5);
-    funcion.sendEscalamiento(3, 4, 'esc4', 7);
-    funcion.sendEscalamiento(4, 5, 'esc5', 9);
+    //funcion.sendEscalamiento(1, 2, 'esc2', 3);
+    //funcion.sendEscalamiento(2, 3, 'esc3', 5);
+    //funcion.sendEscalamiento(3, 4, 'esc4', 7);
+    //funcion.sendEscalamiento(4, 5, 'esc5', 9);
 
 });
 
