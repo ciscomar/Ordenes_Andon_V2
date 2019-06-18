@@ -1,4 +1,10 @@
 <div class="row" id="tarjetas">
+    <%
+        let total = data2.andonAbiertas + data2.andonAtendidas + data2.andonCerradas
+        let porcentajeAbiertas =    Math.round(data2.andonAbiertas  * 100 / total) *100/100
+        let porcentajeAtendidas =   Math.round(data2.andonAtendidas * 100 / total) *100/100
+        let porcentajeCerradas =    Math.round(data2.andonCerradas  * 100 / total) *100/100
+        %>
 
     <!-- andon Atendidas -->
     <div class="animated fadeInLeft fast col-xl-3 col-md-6 mb-4">
@@ -6,12 +12,19 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas</div>
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas:
+                            <%=data2.andonAtendidas%></div>
+
+                        <div class="progress">
+                            <div class="animated fadeInLeft fast progress-bar progress-bar-striped bg-info"
+                                role="progressbar" style="width: <%=porcentajeAtendidas%>%"
+                                aria-valuenow="<%=porcentajeAtendidas%>" aria-valuemin="0" aria-valuemax="<%=total%>">
+                                <%=porcentajeAtendidas%>%</div>
+                        </div>
+
                         <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data2.andonAtendidas%>
-                                </div>
-                            </div>
+
+
                         </div>
                     </div>
                     <div class="col-auto">
@@ -28,9 +41,17 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas:
+                            <%=data2.andonAbiertas%>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.andonAbiertas%></div>
+
+                        <div class="progress">
+                            <div class="animated fadeInLeft fast cdelay-1 progress-bar progress-bar-striped bg-danger"
+                                role="progressbar" style="width: <%=porcentajeAbiertas%>%"
+                                aria-valuenow="<%=porcentajeAbiertas%>" aria-valuemin="0" aria-valuemax="<%=total%>">
+                                <%=porcentajeAbiertas%>%</div>
+                        </div>
+
                     </div>
                     <div class="col-auto">
                         <i class="far fa-clipboard fa-2x text-gray-300"></i>
@@ -46,9 +67,17 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas:
+                            <%=data2.andonCerradas%>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data2.andonCerradas%></div>
+
+                        <div class="progress">
+                            <div class="animated fadeInLeft fast cdelay-2 progress-bar progress-bar-striped bg-success"
+                                role="progressbar" style="width: <%=porcentajeCerradas%>%"
+                                aria-valuenow="<%=porcentajeCerradas%>" aria-valuemin="0" aria-valuemax="<%=total%>">
+                                <%=porcentajeCerradas%>%</div>
+                        </div>
+
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -78,29 +107,41 @@
     </div>
 </div>
 
+
 <div class="container-fluid mt-4 mb-4">
 
     <%
-    let total = data2.andonAbiertas + data2.andonAtendidas + data2.andonCerradas
-    let porcentajeAbiertas =    Math.round(data2.andonAbiertas  * 100 / total) *100/100
-    let porcentajeAtendidas =   Math.round(data2.andonAtendidas * 100 / total) *100/100
-    let porcentajeCerradas =    Math.round(data2.andonCerradas  * 100 / total) *100/100
+    let total2 = data3.andonExtrusion + data3.andonVulca + data3.andonEstampado + data3.andonEnsamble
+    let porcentajeExtrusion =    Math.round(data3.andonExtrusion  * 100 / total2) *100/100
+    let porcentajeVulca =   Math.round(data3.andonVulca* 100 / total2) *100/100
+    let porcentajeEstampado =    Math.round(data3.andonEstampado  * 100 / total2) *100/100
+    let porcentajeEnsamble =    Math.round(data3.andonEnsamble  * 100 / total2) *100/100
     %>
+    <h5 class="text-center">Areas Abiertas</h>
+        <h6>Extrusion</h6>
+        <div class="progress">
 
-    <div class="progress">
-        <div class="animated fadeInLeft fast progress-bar progress-bar-striped bg-info" role="progressbar"
-            style="width: <%=porcentajeAtendidas%>%" aria-valuenow="<%=porcentajeAtendidas%>" aria-valuemin="0"
-            aria-valuemax="<%=total%>"><%=porcentajeAtendidas%>%</div>
-    </div>
-    <div class="progress">
-        <div class="animated fadeInLeft fast cdelay-1 progress-bar progress-bar-striped bg-danger" role="progressbar"
-            style="width: <%=porcentajeAbiertas%>%" aria-valuenow="<%=porcentajeAbiertas%>" aria-valuemin="0"
-            aria-valuemax="<%=total%>"><%=porcentajeAbiertas%>%</div>
-    </div>
-    <div class="progress">
-        <div class="animated fadeInLeft fast cdelay-2 progress-bar progress-bar-striped bg-success" role="progressbar"
-            style="width: <%=porcentajeCerradas%>%" aria-valuenow="<%=porcentajeCerradas%>" aria-valuemin="0"
-            aria-valuemax="<%=total%>"><%=porcentajeCerradas%>%</div>
-    </div>
+            <div class="animated fadeInLeft fast progress-bar progress-bar-striped bg-info bg-warning"
+                role="progressbar" style="width: <%=porcentajeExtrusion%>%" aria-valuenow="<%=porcentajeExtrusion%>"
+                aria-valuemin="0" aria-valuemax="<%=total2%>"><%=porcentajeExtrusion%>%</div>
+        </div>
+        <h6>Vulcanizado</h6>
+        <div class="progress">
+            <div class="animated fadeInLeft fast cdelay-1 progress-bar progress-bar-striped bg-secondary"
+                role="progressbar" style="width: <%=porcentajeVulca%>%" aria-valuenow="<%=porcentajeVulca%>"
+                aria-valuemin="0" aria-valuemax="<%=total2%>"><%=porcentajeVulca%>%</div>
+        </div>
+        <h6>Estampado</h6>
+        <div class="progress">
+            <div class="animated fadeInLeft fast cdelay-2 progress-bar progress-bar-striped bg-warning"
+                role="progressbar" style="width: <%=porcentajeEstampado%>%" aria-valuenow="<%=porcentajeEstampado%>"
+                aria-valuemin="0" aria-valuemax="<%=total2%>"><%=porcentajeEstampado%>%</div>
+        </div>
+        <h6>Ensamble</h6>
+        <div class="progress">
+            <div class="animated fadeInLeft fast cdelay-2 progress-bar progress-bar-striped bg-secondary"
+                role="progressbar" style="width: <%=porcentajeEnsamble%>%" aria-valuenow="<%=porcentajeEnsamble%>"
+                aria-valuemin="0" aria-valuemax="<%=total2%>"><%=porcentajeEnsamble%>%</div>
+        </div>
 
 </div>

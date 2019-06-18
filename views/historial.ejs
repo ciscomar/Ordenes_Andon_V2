@@ -4,7 +4,7 @@
 
 <div class="col-md-10 col-lg-10-2 col-xl-11">
     <div class="box-header">
-        <h3 class="box-title">Andons del usuario <%= data3 %></h3>
+        <h3 class="box-title">Andons del usuario <%= data4 %></h3>
     </div>
 
     <% include tarjetas %>
@@ -19,6 +19,9 @@
                 <th>Clave</th>
                 <th>Departamento</th>
                 <th>Problema</th>
+                <th>Area</th>
+                <th>Area Afectada</th>
+                <th>Estacion</th>
                 <th>Descripcion de la falla</th>
                 <th>Reportado por</th>
                 <th>Fecha</th>
@@ -59,6 +62,9 @@
                     <td><%= data[i].clave %></td>
                     <td><%= data[i].nombre%></td>
                     <td><%= data[i].descripcion %></td>
+                    <td><%= data[i].area %></td>
+                    <td><%= data[i].subarea %></td>
+                    <td><%= data[i].estacion %></td>
                     <td class="table_long_text"><%= data[i].descripcion_problema %></td>
                     <td><%= data[i].reporto %></td>
                     <td><%= formatted_date %></td>

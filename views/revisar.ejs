@@ -19,7 +19,8 @@
         %>
 
         <div class="card bg-light  ">
-            <div class=" card-header text-white bg-<%=classBtn%> text-center text-capitalize"><%=data.andonStatus%></div>
+            <div class=" card-header text-white bg-<%=classBtn%> text-center text-capitalize"><%=data.andonStatus%>
+            </div>
             <div class="card-body">
                 <table class="table">
                     <thead class="thead-dark">
@@ -40,6 +41,18 @@
                             <td><%= data.problema%></td>
                         </tr>
                         <tr>
+                            <td>Area</td>
+                            <td><%= data.area%></td>
+                        </tr>
+                        <tr>
+                            <td>Area Afectada</td>
+                            <td><%= data.subarea%></td>
+                        </tr>
+                        <tr>
+                            <td>Estacion</td>
+                            <td><%= data.estacion%></td>
+                        </tr>
+                        <tr>
                             <td>Descripcion problema</td>
                             <td><%= data.descripcionProblema%></td>
                         </tr>
@@ -49,8 +62,8 @@
                         </tr>
 
                         <tr class="text-center text-white">
-                                <td class="bg-dark" colspan="2"><%=data.departamento%></td>
-                            </tr>
+                            <td class="bg-dark" colspan="2"><%=data.departamento%></td>
+                        </tr>
                         <tr class="text-center text-white">
                             <td class="bg-info" colspan="2">Informacion atendida</td>
                         </tr>

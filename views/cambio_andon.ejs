@@ -29,12 +29,26 @@
                             <td><%= problema%></td>
                         </tr>
                         <tr>
+                            <td>Area</td>
+                            <td><%= area%></td>
+                        </tr>
+                        <tr>
+                            <td>Area Afectada</td>
+                            <td><%= subarea%></td>
+                        </tr>
+                        <tr>
+                            <td>Estacion</td>
+                            <td><%= estacion%></td>
+                        </tr>
+                        <tr>
                             <td>Clave de cierre</td>
                             <td><%= clave_cierre%></td>
                         </tr>
                         <tr>
                             <td>Actividades realizadas</td>
-                            <td><div  style="width: 800px; word-wrap: break-word"><%=actividades%></div></td>
+                            <td>
+                                <div style="width: 800px; word-wrap: break-word"><%=actividades%></div>
+                            </td>
                         </tr>
 
                 </table>
@@ -46,7 +60,7 @@
     if (window.history.replaceState) {
         window.history.replaceState(null, null, '/');
     }
-</script> 
+</script>
 <% include footer %>
 </div>
 </body>

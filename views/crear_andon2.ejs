@@ -1,0 +1,141 @@
+<% include header %>
+<% include sidebar %>
+<% include navbar %>
+
+<div class="col-md-6 col-lg-10-2">
+    <!-- general form elements -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Crear Andon</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form action="/andon_guardad" method="POST">
+            <div class="box-body">
+                <!------->
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Empleado</label>
+                        <input readonly type="text" class="form-control" id="empleado" value="<%= data3%>"
+                            name="empleado">
+                    </div>
+
+                    <div class="form-group  col-lg-6">
+                        <label for="Titulo">Gafete</label>
+                        <input readonly type="text" class="form-control" id="gafete" value="<%= data4%>" name="gafete">
+                    </div>
+                </div>
+                <!------->
+                <!------->
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="Titulo">Departamento</label>
+                        <input readonly type="text" class="form-control" id="departamento" value="<%= data5%>"
+                            name="departamento">
+                    </div>
+
+                    <div class="form-group  col-lg-6">
+                        <label for="Titulo">Area del Problema</label>
+                        <input readonly type="text" class="form-control" id="area" value="<%= data6%>" name="area">
+                    </div>
+                </div>
+                <!------->
+                <!------->
+                <div class="row">
+                    <div class="form-group  col-lg-6">
+                        <label for="Titulo">Area Afectada</label>
+                        <select type="text" class="form-control" id="subarea" name="subarea" required>
+                            <option value="" selected>Seleccionar</option>
+                            <%if(data7) { %>
+                            <% for (var i = 0; i < data7.length; i++) { %>
+                            <option value="<%= data7[i].id_subarea %>"><%= data7[i].subarea %></option>
+                            <% } %>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <div class="form-group  col-lg-6">
+                        <label for="Titulo">Estacion</label>
+                        <select type="text" class="form-control" id="estacion" name="estacion" disabled>
+                                <option value="" selected id="selectestacion">Seleccionar</option>
+                            <%if(data8) { %>                               
+                            <% for (var i = 0; i < data8.length; i++) { %>
+                                
+                            <option value="<%= data8[i].id_subarea %>"><%= data8[i].estacion %></option>
+                            <label type="text" class="form-control" id="inestacion" name="inestacion" hidden></label>
+                            <% } %>
+                            <% } %>
+                        </select>
+                        <input type="text" class="form-control" id="inestacion" value="na" name="inestacion" hidden>
+                    </div>
+                </div>
+                <!------->
+
+                <div class="form-group">
+                    <label for="Titulo">Problemas Comunes</label>
+                    <select class="form-control" name="problema" id="problema" required>
+                        <option value="" selected>Seleccionar</option>
+                        <%if(data) { %>
+                        <% for (var i = 0; i < data2.length; i++) { %>
+                        <option><%= data2[i].descripcion %></option>
+
+                        <% } %>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Descripcion">Descripcion de la falla</label>
+                    <textarea type="text" class="form-control " rows="3" cols="100" wrap="hard" name="descripcion"
+                        required></textarea>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary"
+                        onclick="$('form').attr('action', '/guardar_andon');">Generar Andon</button>
+                </div>
+        </form>
+    </div>
+    <!-- /.box -->
+
+    <% include footer %>
+</div>
+</body>
+
+</html>
+
+<script>
+
+    $("#subarea").change(function () {
+        if ($('#subarea').val() > 11) {
+            $('#estacion').prop("disabled", false);
+  
+        }
+        filter(this)
+        var optionselect = $("#selectestacion");
+        $("#selectestacion").show();
+        $('#selectestacion').prop('selected', true)
+    });
+
+    function filter(elem) {
+
+        var value = elem.value;
+
+        var options = $("#estacion option");
+
+        options.hide();
+        var op = options.filter(function () {
+            return value == $(this).val();
+        }).show();
+
+        $("#estacion").val(op.eq(0).val());
+
+
+    }
+
+
+    $("#estacion").change(function (e) {
+
+        $("#inestacion").val(e.target.selectedIndex)
+    });
+
+
+</script>

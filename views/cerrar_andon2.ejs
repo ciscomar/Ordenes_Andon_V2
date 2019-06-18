@@ -6,34 +6,36 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Cerrar Andon</h3>
-            <label id="clave_cerrar2" hidden><%=id_clave%></label></div>
-            <label id="status_cerrar2" hidden><%=status%></label></div>
-        <!-- form start -->
-        <form method="POST">
-            <div class="box-body">
-                <!-- form body -->
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label for="Titulo">Empleado</label>
-                        <input readonly type="text" class="form-control" name="nombreEmpleado" id="nombreEmpleado"
-                            value="<%=nombreEmpleado%>">
-                    </div>
-
-                    <div class="form-group col-lg-6">
-                        <label for="Titulo">Gafete</label>
-                        <input readonly type="text" class="form-control" name="numeroEmpleado" id="numeroEmpleado"
-                            value="<%=numeroEmpleado%>">
-                    </div>
+            <label id="clave_cerrar2" hidden><%=id_clave%></label>
+        </div>
+        <label id="status_cerrar2" hidden><%=status%></label>
+    </div>
+    <!-- form start -->
+    <form method="POST">
+        <div class="box-body">
+            <!-- form body -->
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <label for="Titulo">Empleado</label>
+                    <input readonly type="text" class="form-control" name="nombreEmpleado" id="nombreEmpleado"
+                        value="<%=nombreEmpleado%>">
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="Titulo">Numero de Andon</label>
-                        <input readonly type="text" class="form-control" name="id_andon" id="id_andon"
-                            value="<%=id_andon%>">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="Titulo">Fecha: (YYYY-MM-DD)</label>
-                        <%
+
+                <div class="form-group col-lg-6">
+                    <label for="Titulo">Gafete</label>
+                    <input readonly type="text" class="form-control" name="numeroEmpleado" id="numeroEmpleado"
+                        value="<%=numeroEmpleado%>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="Titulo">Numero de Andon</label>
+                    <input readonly type="text" class="form-control" name="id_andon" id="id_andon"
+                        value="<%=id_andon%>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Titulo">Fecha: (YYYY-MM-DD)</label>
+                    <%
                                     function getDate() {
                               var today = new Date();
                               var dd = String(today.getDate()).padStart(2, '0');
@@ -46,40 +48,60 @@
                               return today;
                             }
                                 %>
-                        <input readonly type="hidden" name="current_date" id="current_date" value="<%=Date()%>">
-                        <input readonly type="text" name="formatted_current_date" class="form-control"
-                            value="<%=getDate()%>">
-                    </div>
+                    <input readonly type="hidden" name="current_date" id="current_date" value="<%=Date()%>">
+                    <input readonly type="text" name="formatted_current_date" class="form-control"
+                        value="<%=getDate()%>">
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="Titulo"id="lbl_clave_cerrar2">Clave de cierre:</label> <label id="msg"> </label> 
-                        <input type="text" class="form-control" name="clave_cierre" id="clave_cierre" value="">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="Titulo">Problema Comun:</label>
-                        <input readonly type="text" class="form-control" name="problema" id="problema"
-                            value="<%=problema%>">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="Descripcion">Actividades realizadas:</label>
-                    <textarea type="text" class="form-control " rows="3" name="actividades" required></textarea>
-                </div>
-                
             </div>
-            <button formAction="/cambio_andon/Atendida" type="submit" class="btn btn-primary btn-block" id="atender"
-                >Atender
-                Andon</button>
-            <button formAction="/cambio_andon/Cerrada" type="submit" class="btn btn-success btn-block" id="cerrar"
-                disabled>Cerrar
-                Andon</button>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="Titulo">Area del Problema:</label> </label>
+                    <input readonly type="text" class="form-control" name="area" id="area" value="<%=area%>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Titulo">Area Afectada:</label>
+                    <input readonly type="text" class="form-control" name="subarea" id="subarea" value="<%=subarea%>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="Titulo">Estacion:</label>
+                    <input readonly type="text" class="form-control" name="estacion" id="estacion"
+                        value="<%=estacion%>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Titulo">Problema Comun:</label>
+                    <input readonly type="text" class="form-control" name="problema" id="problema"
+                        value="<%=problema%>">
+                </div>
 
-        </form>
-    </div>
+            </div>
 
-    <% include footer %>
-    <script src="./js/revisarClave.js"></script>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="Titulo" id="lbl_clave_cerrar2">Clave de cierre:</label> <label id="msg"> </label>
+                    <input type="text" class="form-control" name="clave_cierre" id="clave_cierre" value="">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="Descripcion">Actividades realizadas:</label>
+                <textarea type="text" class="form-control " rows="3" name="actividades" required></textarea>
+            </div>
+
+        </div>
+        <button formAction="/cambio_andon/Atendida" type="submit" class="btn btn-primary btn-block" id="atender">Atender
+            Andon</button>
+        <button formAction="/cambio_andon/Cerrada" type="submit" class="btn btn-success btn-block" id="cerrar"
+            disabled>Cerrar
+            Andon</button>
+
+    </form>
+</div>
+
+<% include footer %>
+<script src="./js/revisarClave.js"></script>
 </div>
 </body>
 

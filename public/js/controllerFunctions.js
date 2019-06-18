@@ -24,6 +24,9 @@ funcion.sendEmail = (dataEmail) => {
         creador: dataEmail.creador,
         gafete: dataEmail.gafete,
         problema: dataEmail.problema,
+        area: dataEmail.area,
+        subarea: dataEmail.subarea,
+        estacion: dataEmail.estacion,
         descripcion: dataEmail.descripcion,
         fecha: dataEmail.fecha,
         eclave: dataEmail.eclave,
@@ -78,6 +81,131 @@ funcion.controllerProblemas = (callback) => {
         } else {
 
             callback(null, result);
+        }
+    })
+
+}
+
+funcion.controllerSubArea = (id_area, callback) => {
+    db.query(`SELECT * FROM andon_subarea WHERE id_area=${id_area}`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+
+}
+
+funcion.controllerSubAreaNombre = (id_subarea, callback) => {
+    db.query(`SELECT * FROM andon_subarea WHERE id_subarea=${id_subarea}`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result[0].subarea);
+        }
+    })
+
+}
+
+funcion.controllerAreaNombre = (id_area, callback) => {
+    db.query(`SELECT * FROM andon_areas WHERE id_area=${id_area}`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result[0].area);
+        }
+    })
+
+}
+
+funcion.controllerAreas = (callback) => {
+    db.query(`SELECT area FROM andon_areas WHERE area != 'N/A'`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+
+}
+
+funcion.controllerAreasId = (area, callback) => {
+    db.query(`SELECT id_area FROM andon_areas WHERE area='${area}'`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result[0].id_area);
+        }
+    })
+
+}
+
+funcion.controllerAreaAndon = (id_andon, callback) => {
+    db.query(`SELECT * FROM andon, andon_areas
+    WHERE andon.id_andon = ${id_andon}
+    AND andon.id_area= andon_areas.id_area`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
+
+                callback(null, result[0].area);
+            }
+        })
+}
+
+funcion.controllerSubAreaAndon = (id_andon, callback) => {
+    db.query(`SELECT * FROM andon, andon_subarea
+    WHERE andon.id_andon = ${id_andon}
+    AND andon.id_subarea= andon_subarea.id_subarea`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
+
+                callback(null, result[0].subarea);
+            }
+        })
+}
+
+funcion.controllerEstacionAndon = (id_andon, callback) => {
+    db.query(`SELECT * FROM andon, andon_estaciones
+    WHERE andon.id_andon = ${id_andon}
+    AND andon.id_estacion= andon_estaciones.id_estacion`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else if (result != '') {
+                callback(null, result[0].estacion);
+            } else {
+                callback(null, '')
+            }
+        })
+}
+
+funcion.controllerEstaciones = (callback) => {
+    db.query(`SELECT * FROM otplus.andon_estaciones
+    INNER JOIN andon_subarea ON andon_estaciones.id_subarea = andon_subarea.id_subarea`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
+
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.controllerEstacionNombre = (id_estacion, callback) => {
+    db.query(`SELECT estacion FROM andon_estaciones WHERE id_estacion='${id_estacion}'`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result[0].estacion);
         }
     })
 
@@ -183,11 +311,14 @@ funcion.controllerMaxIdAndon = (callback) => {
 
 }
 
-funcion.controllerInsertAndon = (id_dep, id_prob, descripcion, gafete, clave, callback) => {
+funcion.controllerInsertAndon = (id_dep, id_prob, id_area, id_subarea, id_estacion, descripcion, gafete, clave, callback) => {
+    if (id_estacion == '') {
+        id_estacion = 104
+    }
     db.query(`
-    INSERT INTO andon (departamento, problemas_comunes, fecha_inicio, tiempo_muerto, 
+    INSERT INTO andon (departamento, problemas_comunes,id_area, id_subarea, id_estacion, fecha_inicio, tiempo_muerto, 
     descripcion_problema, reporto, clave, status,escalamiento)
-    VALUES( '${id_dep}', '${id_prob}', NOW() ,'${0}', '${descripcion}','${gafete}', '${clave}', 'Abierta',0)`, function (err, result, fields) {
+    VALUES( '${id_dep}', '${id_prob}','${id_area}','${id_subarea}','${id_estacion}', NOW() ,'${0}', '${descripcion}','${gafete}', '${clave}', 'Abierta',0)`, function (err, result, fields) {
             if (err) {
                 callback(err, null);
             } else {
@@ -234,9 +365,13 @@ funcion.controllerUpdateAndonC = (accionTomada, actividades, formatted_current_d
 }
 
 funcion.controllerTablaAndon = (callback) => {
-    db.query(`SELECT * FROM andon, departamento, andon_fallas 
+    db.query(`SELECT * FROM andon, departamento, andon_fallas, andon_areas, andon_subarea, andon_estaciones
     WHERE (andon.departamento = departamento.id_departamento) 
-    AND(andon.problemas_comunes= andon_fallas.id) ORDER BY status ASC`, function (err, result, fields) {
+    AND(andon.problemas_comunes= andon_fallas.id) 
+    AND(andon.id_area= andon_areas.id_area)
+    AND(andon.id_subarea= andon_subarea.id_subarea)
+    AND(andon.id_estacion= andon_estaciones.id_estacion)
+    ORDER BY status ASC`, function (err, result, fields) {
             if (err) {
                 callback(err, null);
             } else {
@@ -248,9 +383,13 @@ funcion.controllerTablaAndon = (callback) => {
 }
 
 funcion.controllerRevisarAndon = (id_andon, callback) => {
-    db.query(`SELECT * FROM andon, departamento, andon_fallas 
+    db.query(`SELECT * FROM andon, departamento, andon_fallas, andon_areas, andon_subarea, andon_estaciones
     WHERE (andon.departamento = departamento.id_departamento) 
-    AND(andon.problemas_comunes= andon_fallas.id) AND andon.id_andon = "${id_andon}"`, function (err, result, fields) {
+    AND(andon.problemas_comunes= andon_fallas.id)
+    AND(andon.id_area= andon_areas.id_area)
+    AND(andon.id_subarea= andon_subarea.id_subarea)
+    AND(andon.id_estacion= andon_estaciones.id_estacion)
+    AND andon.id_andon = "${id_andon}"`, function (err, result, fields) {
             if (err) {
                 callback(err, null);
             } else {
@@ -273,10 +412,38 @@ funcion.controllerCountAndonAll = (as, status, callback) => {
 
 }
 
+funcion.controllerCountAndonArea = (as, area, callback) => {
+    db.query(`SELECT COUNT(*) AS ${as} FROM andon WHERE status !='Cerrada' && id_area='${area}'`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+
+}
+
+funcion.controllerCountAndonAreaEmp = (as, area, numeroEmpleado, callback) => {
+    db.query(`SELECT COUNT(*) AS ${as} FROM andon WHERE status !='Cerrada' && id_area='${area}' && reporto='${numeroEmpleado}'`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+
+}
+
 funcion.controllerHisotrialAndon = (numeroEmpleado, callback) => {
-    db.query(`SELECT * FROM andon, departamento, andon_fallas
+    db.query(`SELECT * FROM andon, departamento, andon_fallas, andon_areas, andon_subarea, andon_estaciones
     WHERE (andon.departamento = departamento.id_departamento) 
-    AND(andon.problemas_comunes = andon_fallas.id) AND (andon.reporto ="${numeroEmpleado}") ORDER BY id_andon DESC `, function (err, result, fields) {
+    AND(andon.problemas_comunes = andon_fallas.id) 
+    AND(andon.id_area= andon_areas.id_area)
+    AND(andon.id_subarea= andon_subarea.id_subarea)
+    AND(andon.id_estacion= andon_estaciones.id_estacion)
+    AND (andon.reporto ="${numeroEmpleado}") ORDER BY id_andon DESC `, function (err, result, fields) {
             if (err) {
                 callback(err, null);
             } else {
@@ -312,9 +479,9 @@ funcion.controllerDashCount = (as, selectedMonth, selectedYear, selectedDepartme
 }
 
 funcion.controllerDashSeleccion = (selectedMonth, selectedYear, selectedDepartment, callback) => {
-    db.query(`
-    SELECT COUNT(id_andon) AS problemas_comunes_count, andon_fallas.descripcion as andon_fallas, departamento.nombre as departamento , andon.tiempo_muerto
-    FROM otplus.andon, otplus.andon_fallas, otplus.departamento 
+
+    db.query(`SELECT COUNT(id_andon) AS problemas_comunes_count, andon_fallas.descripcion as andon_fallas, departamento.nombre as departamento , andon.tiempo_muerto
+    FROM otplus.andon, otplus.andon_fallas, otplus.departamento
     WHERE andon.problemas_comunes = andon_fallas.id 
     AND andon.departamento = departamento.id_departamento 
     AND MONTH(andon.fecha_inicio) = ${selectedMonth}  
@@ -327,6 +494,23 @@ funcion.controllerDashSeleccion = (selectedMonth, selectedYear, selectedDepartme
                 callback(err, null);
             } else {
 
+                callback(null, result);
+            }
+        })
+
+}
+
+funcion.controllerDashSeleccionArea = (area, callback) => {
+
+    db.query(`SELECT andon.id_subarea, count(*) AS TOTAL, andon_subarea.subarea AS subarea 
+    FROM otplus.andon, otplus.andon_subarea 
+    WHERE andon.id_area =${area} 
+    AND andon.id_subarea = andon_subarea.id_subarea 
+    GROUP BY andon.id_subarea`, function (err, result, fields) {
+
+            if (err) {
+                callback(err, null);
+            } else {
                 callback(null, result);
             }
         })
@@ -406,49 +590,61 @@ funcion.sendEscalamiento = (esc, nextesc, esc1, tiempo) => {
 
                                         db.query(`SELECT descripcion FROM andon_fallas WHERE id=${result[y].problemas_comunes}`, function (err, resultProblema, fields) {
 
-                                            var fechaInicio = result[y].fecha_inicio;
-                                            var fechaActual = new Date();
-                                            var seconds = (fechaActual.getTime() - fechaInicio.getTime()) / 1000;
-                                            minutos = (seconds / 60);
-                                            id_andon = result[y].id_andon;
-                                            reporto = result[y].reporto;
-                                            problema = result[y].problemas_comunes;
-                                            descripcion = result[y].descripcion_problema;
-                                            andonFecha = result[y].fecha_inicio;
-                                            usuarioAtendida = result[y].usuario_atendida;
-                                            fechaAtendida = result[y].fecha_hora_atendida;
-                                            accionAtendidaC = result[y].acciones_atendida;
-                                            usuarioCerrada = result[y].usuario_cierre;
-                                            fechacierre = result[y].fecha_hora_cierre;
-                                            accionCierre = result[y].acciones_cierre;
+                                            db.query(`SELECT area FROM andon_areas WHERE id_area=${result[y].id_area}`, function (err, resultArea, fields) {
 
-                                            to = resultc[i].correo;
-                                            cc = '';
-                                            subject = 'Andon ' + id_andon + ' -Abierta- ' + tiempo + ' Min';
-                                            status = 'Abierta: ' + tiempo + ' Min';
-                                            color = '#b30000';
-                                            id_andon = id_andon;
-                                            creador = resultNombre[0].emp_Nombre;
-                                            gafete = reporto;
-                                            problema = resultProblema[0].descripcion;
-                                            descripcion = descripcion;
-                                            fecha = andonFecha;
-                                            eclave = '';
-                                            empleadoAtendida = usuarioAtendida;
-                                            fechaAtendida = fechaAtendida;
-                                            accionAtendida = accionAtendidaC;
-                                            empleadoCerrada = usuarioCerrada;
-                                            fechaCerrada = fechacierre;
-                                            accionCerrada = accionCierre;
+                                                db.query(`SELECT subarea FROM andon_subarea WHERE id_subarea=${result[y].id_subarea}`, function (err, resultSubarea, fields) {
 
-                                            dataEmail = {
-                                                to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                                                fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
-                                            }
+                                                    db.query(`SELECT estacion FROM andon_estaciones WHERE id_estacion='${result[y].id_estacion}'`, function (err, resultEstacion, fields) {
 
-                                            funcion.sendEmail(dataEmail);
+                                                        var fechaInicio = result[y].fecha_inicio;
+                                                        var fechaActual = new Date();
+                                                        var seconds = (fechaActual.getTime() - fechaInicio.getTime()) / 1000;
+                                                        minutos = (seconds / 60);
+                                                        id_andon = result[y].id_andon;
+                                                        reporto = result[y].reporto;
+                                                        problema = result[y].problemas_comunes;
+                                                        descripcion = result[y].descripcion_problema;
+                                                        andonFecha = result[y].fecha_inicio;
+                                                        usuarioAtendida = result[y].usuario_atendida;
+                                                        fechaAtendida = result[y].fecha_hora_atendida;
+                                                        accionAtendidaC = result[y].acciones_atendida;
+                                                        usuarioCerrada = result[y].usuario_cierre;
+                                                        fechacierre = result[y].fecha_hora_cierre;
+                                                        accionCierre = result[y].acciones_cierre;
 
-                                        });
+                                                        to = resultc[i].correo;
+                                                        cc = '';
+                                                        subject = 'Andon ' + id_andon + ' -Abierta- ' + tiempo + ' Min';
+                                                        status = 'Abierta: ' + tiempo + ' Min';
+                                                        color = '#b30000';
+                                                        id_andon = id_andon;
+                                                        creador = resultNombre[0].emp_Nombre;
+                                                        gafete = reporto;
+                                                        problema = resultProblema[0].descripcion;
+                                                        area = resultArea[0].area;
+                                                        subarea = resultSubarea[0].subarea;
+                                                        estacion = resultEstacion[0].estacion;
+                                                        descripcion = descripcion;
+                                                        fecha = andonFecha;
+                                                        eclave = '';
+                                                        empleadoAtendida = usuarioAtendida;
+                                                        fechaAtendida = fechaAtendida;
+                                                        accionAtendida = accionAtendidaC;
+                                                        empleadoCerrada = usuarioCerrada;
+                                                        fechaCerrada = fechacierre;
+                                                        accionCerrada = accionCierre;
+
+                                                        dataEmail = {
+                                                            to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
+                                                            fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
+                                                        }
+
+                                                        funcion.sendEmail(dataEmail);
+
+                                                    });
+                                                });
+                                            })
+                                        })
                                     })
                                 }
                             });

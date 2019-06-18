@@ -43,7 +43,17 @@ controller.login = (req, res) => {
                         data: loginId, data2: result
                     });
                 });
-            }
+            } else
+                if (loginId == 'historial') {
+                    funcionE.empleadosAccessAll(1, '>=', (err, result) => {
+
+                        res.render('login.ejs', {
+                            data: loginId, data2: result
+                        });
+                    });
+                }
+
+
 };
 
 //POST a crear_andon despues de login primero revisa si el Gafete existe 
@@ -54,7 +64,7 @@ controller.crear_andon_POST = (req, res) => {
         if (err) throw err;
         funcion.controllerDepartamentos((err, result1) => {
             if (err) throw err;
-            funcion.controllerProblemas((err, result2) => {
+            funcion.controllerAreas((err, result2) => {
                 if (err) throw err;
 
                 res.render('crear_andon.ejs', {
@@ -66,40 +76,90 @@ controller.crear_andon_POST = (req, res) => {
 
 };
 
+//POST a crear_andon2 
+controller.crear_andon2_POST = (req, res) => {
+    numeroEmpleado = req.body.gafete;
+    departamento = req.body.departamento;
+    area = req.body.area;
+
+    funcion.controllerAreasId(area, (err, result5) => {
+        if (err) throw err;
+        funcionE.empleadosNombre(numeroEmpleado, (err, result3) => {
+            if (err) throw err;
+            funcion.controllerDepartamentos((err, result1) => {
+                if (err) throw err;
+                funcion.controllerProblemas((err, result2) => {
+                    if (err) throw err;
+                    funcion.controllerSubArea(result5, (err, result4) => {
+                        if (err) throw err;
+
+                        funcion.controllerEstaciones((err, result6) => {
+                            if (err) throw err;
+
+                            res.render('crear_andon2.ejs', {
+                                data: result1, data2: result2, data3: result3, data4: numeroEmpleado, data5: departamento, data6: area, data7: result4, data8: result6
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+};
+
 
 //POST a guardar_andon despues de crear andon2
 controller.guardar_andon_POST = (req, res) => {
-
 
     empleado = (req.body.empleado)
     gafete = (req.body.gafete)
     departamento = (req.body.departamento)
     problema = (req.body.problema)
     descripcion = (req.body.descripcion)
+    area = req.body.area;
+    id_subarea = req.body.subarea;
+    id_estacion = req.body.inestacion;
+    let estacion = "";
     clave = Math.floor(Math.random() * 10000);
 
-
-    funcion.controllerIdProblema(problema, (err, id_prob) => {
+    funcion.controllerSubAreaNombre(id_subarea, (err, result3) => {
         if (err) throw err;
+        subarea = result3
+        if (id_estacion != 'na') {
 
-        funcion.controllerIdDepartamento(departamento, (err, id_dep) => {
+            funcion.controllerEstacionNombre(id_estacion, (err, result4) => {
+                if (err) throw err;
+                estacion = result4
+            });
+        } else {
+            id_estacion = 0;
+        }
+        funcion.controllerIdProblema(problema, (err, id_prob) => {
             if (err) throw err;
 
-            funcion.controllerInsertAndon(id_dep, id_prob, descripcion, gafete, clave, (err, result) => {
+            funcion.controllerAreasId(area, (err, id_area) => {
                 if (err) throw err;
 
-                funcion.controllerMaxIdAndon((err, result2) => {
-                    id_andon = result2[0].id;
+                funcion.controllerIdDepartamento(departamento, (err, id_dep) => {
                     if (err) throw err;
 
-                    res.render('guardar_andon.ejs', {
-                        data: { departamento, problema, descripcion, clave, id_andon }
+                    funcion.controllerInsertAndon(id_dep, id_prob, id_area, id_subarea, id_estacion, descripcion, gafete, clave, (err, result) => {
+                        if (err) throw err;
+
+                        funcion.controllerMaxIdAndon((err, result2) => {
+                            id_andon = result2[0].id;
+                            if (err) throw err;
+
+                            res.render('guardar_andon.ejs', {
+                                data: { departamento, problema, descripcion, clave, id_andon, area, subarea, estacion }
+                            });
+                        });
                     });
                 });
             });
         });
-    });
 
+    });
 
 
 
@@ -121,6 +181,9 @@ controller.guardar_andon_POST = (req, res) => {
                 creador = empleado;
                 gafete = gafete;
                 problema = problema;
+                area = area;
+                subarea = subarea;
+                estacion = estacion;
                 descripcion = descripcion;
                 fecha = new Date();
                 eclave = clave;
@@ -133,14 +196,14 @@ controller.guardar_andon_POST = (req, res) => {
 
                 dataEmail = {
                     to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                    fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
+                    fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
                 }
 
                 funcion.sendEmail(dataEmail);
             });
 
             //Enviar Correo Empleados del Departamento
-            funcionE.empleadosAccessAll(2,'=',(err, gafeteAcc) => {
+            funcionE.empleadosAccessAll(2, '=', (err, gafeteAcc) => {
 
                 for (var i = 0; i < gafeteAcc.length; i++) {
 
@@ -158,6 +221,9 @@ controller.guardar_andon_POST = (req, res) => {
                             creador = empleado;
                             gafete = gafete;
                             problema = problema;
+                            area = area;
+                            subarea = subarea;
+                            estacion = estacion;
                             descripcion = descripcion;
                             fecha = new Date();
                             eclave = '';
@@ -170,7 +236,7 @@ controller.guardar_andon_POST = (req, res) => {
 
                             dataEmail = {
                                 to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                                fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
+                                fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
                             }
 
                             funcion.sendEmail(dataEmail);
@@ -181,8 +247,6 @@ controller.guardar_andon_POST = (req, res) => {
             });
         });
     });
-
-
 };
 
 //Get tabla andons
@@ -196,13 +260,29 @@ controller.andons_GET = (req, res) => {
                 if (err) throw err;
                 funcion.controllerCountAndonAll('cerradas', "Cerrada", (err, result4) => {
                     if (err) throw err;
+                    funcion.controllerCountAndonArea('extrusion', 1, (err, result5) => {
+                        if (err) throw err;
+                        funcion.controllerCountAndonArea('vulca', 2, (err, result6) => {
+                            if (err) throw err;
+                            funcion.controllerCountAndonArea('estampado', 3, (err, result7) => {
+                                if (err) throw err;
+                                funcion.controllerCountAndonArea('ensamble', 4, (err, result8) => {
+                                    if (err) throw err;
 
-                    andonAbiertas = result2[0].abiertas
-                    andonAtendidas = result3[0].atendidas
-                    andonCerradas = result4[0].cerradas
+                                    andonAbiertas = result2[0].abiertas
+                                    andonAtendidas = result3[0].atendidas
+                                    andonCerradas = result4[0].cerradas
+                                    andonExtrusion = result5[0].extrusion
+                                    andonVulca = result6[0].vulca
+                                    andonEstampado = result7[0].estampado
+                                    andonEnsamble = result8[0].ensamble
 
-                    res.render('andons.ejs', {
-                        data: result, data2: { andonAbiertas, andonAtendidas, andonCerradas }
+                                    res.render('andons.ejs', {
+                                        data: result, data2: { andonAbiertas, andonAtendidas, andonCerradas }, data3: { andonExtrusion, andonVulca, andonEstampado, andonEnsamble }
+                                    });
+                                });
+                            });
+                        });
                     });
                 });
             });
@@ -248,8 +328,25 @@ controller.cerrar_andon2_POST = (req, res) => {
                 if (err) throw err;
                 problema = result1[0].descripcion
 
-                res.render('cerrar_andon2.ejs', {
-                    data: { numeroEmpleado, nombreEmpleado, id_andon, problema, id_clave, status }
+                funcion.controllerAreaAndon(id_andon, (err, result3) => {
+                    if (err) throw err;
+                    area = result3;
+
+                    funcion.controllerSubAreaAndon(id_andon, (err, result4) => {
+                        if (err) throw err;
+                        subarea = result4;
+
+
+                        funcion.controllerEstacionAndon(id_andon, (err, result5) => {
+                            if (err) throw err;
+                            estacion = result5;
+
+
+                            res.render('cerrar_andon2.ejs', {
+                                data: { numeroEmpleado, nombreEmpleado, id_andon, problema, id_clave, status, area, subarea, estacion }
+                            });
+                        });
+                    });
                 });
             });
         });
@@ -269,6 +366,9 @@ controller.cambio_andon_POST = (req, res) => {
     clave_cierre = req.body.clave_cierre;
     problema = req.body.problema;
     actividades = req.body.actividades;
+    area = req.body.area;
+    subarea = req.body.subarea;
+    estacion = req.body.estacion;
 
 
     db.query(`SELECT * FROM andon WHERE id_andon = ${id_andon}`, function (err, result, fields) {
@@ -299,7 +399,7 @@ controller.cambio_andon_POST = (req, res) => {
                     if (err) throw err;
 
                     res.render('cambio_andon.ejs', {
-                        data: { accionTomada, nombreEmpleado, numeroEmpleado, id_andon, formatted_current_date, clave_cierre, problema, actividades }
+                        data: { accionTomada, nombreEmpleado, numeroEmpleado, id_andon, formatted_current_date, clave_cierre, problema, actividades, area, subarea, estacion }
                     });
                 });
 
@@ -316,6 +416,9 @@ controller.cambio_andon_POST = (req, res) => {
                         creador = nombrereporto;
                         gafete = reporto;
                         problema = problema;
+                        area = area;
+                        subarea = subarea;
+                        estacion = estacion;
                         descripcion = descripcion;
                         fecha = andonFecha;
                         eclave = clave_cierre;
@@ -328,7 +431,7 @@ controller.cambio_andon_POST = (req, res) => {
 
                         dataEmail = {
                             to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                            fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
+                            fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
                         }
 
                         funcion.sendEmail(dataEmail);
@@ -342,7 +445,7 @@ controller.cambio_andon_POST = (req, res) => {
                 funcion.controllerUpdateAndonC(accionTomada, actividades, formatted_current_date, minutos, nombreEmpleado, id_andon, (err, result) => {
 
                     res.render('cambio_andon.ejs', {
-                        data: { accionTomada, nombreEmpleado, numeroEmpleado, id_andon, formatted_current_date, clave_cierre, problema, actividades }
+                        data: { accionTomada, nombreEmpleado, numeroEmpleado, id_andon, formatted_current_date, clave_cierre, problema, actividades, area, subarea, estacion }
                     });
                 });
 
@@ -359,6 +462,9 @@ controller.cambio_andon_POST = (req, res) => {
                         creador = nombrereporto;
                         gafete = reporto;
                         problema = problema;
+                        area = area;
+                        subarea = subarea;
+                        estacion = estacion;
                         descripcion = descripcion;
                         fecha = andonFecha;
                         eclave = clave_cierre;
@@ -371,7 +477,7 @@ controller.cambio_andon_POST = (req, res) => {
 
                         dataEmail = {
                             to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                            fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada
+                            fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
                         }
 
                         funcion.sendEmail(dataEmail);
@@ -402,13 +508,33 @@ controller.historial_POST = (req, res) => {
                 funcion.controllerHistorialAndonStatus('cerradas', "Cerrada", numeroEmpleado, (err, result4) => {
                     if (err) throw err;
 
-                    andonAbiertas = result2[0].abiertas
-                    andonAtendidas = result3[0].atendidas
-                    andonCerradas = result4[0].cerradas
+                    funcion.controllerCountAndonAreaEmp('extrusion', 1, numeroEmpleado, (err, result5) => {
+                        if (err) throw err;
+                        funcion.controllerCountAndonAreaEmp('vulca', 2, numeroEmpleado, (err, result6) => {
+                            if (err) throw err;
+                            funcion.controllerCountAndonAreaEmp('estampado', 3, numeroEmpleado, (err, result7) => {
+                                if (err) throw err;
+                                funcion.controllerCountAndonAreaEmp('ensamble', 4, numeroEmpleado, (err, result8) => {
+                                    if (err) throw err;
 
 
-                    res.render('historial.ejs', {
-                        data: result, data2: { andonAbiertas, andonAtendidas, andonCerradas }, data3: numeroEmpleado
+
+
+                                    andonAbiertas = result2[0].abiertas
+                                    andonAtendidas = result3[0].atendidas
+                                    andonCerradas = result4[0].cerradas
+                                    andonExtrusion = result5[0].extrusion
+                                    andonVulca = result6[0].vulca
+                                    andonEstampado = result7[0].estampado
+                                    andonEnsamble = result8[0].ensamble
+
+
+                                    res.render('historial.ejs', {
+                                        data: result, data2: { andonAbiertas, andonAtendidas, andonCerradas }, data4: numeroEmpleado, data3: { andonExtrusion, andonVulca, andonEstampado, andonEnsamble }
+                                    });
+                                });
+                            });
+                        });
                     });
                 });
             });
@@ -437,13 +563,16 @@ controller.revisar_POST = (req, res) => {
         accionAtendida = result[0].acciones_atendida;
         accionCierre = result[0].acciones_cierre;
         clave_cierre = result[0].clave;
-        andonStatus = result[0].status
+        andonStatus = result[0].status;
+        area = result[0].area;
+        subarea = result[0].subarea;
+        estacion = result[0].estacion;
 
         funcionE.empleadosNombre(numeroEmpleado, (err, nombreEmpleado) => {
             if (err) throw err;
 
             res.render('revisar.ejs', {
-                data: { id_andon, descripcionProblema, accionAtendida, accionCierre, nombreEmpleado, departamento, numeroEmpleado, creacionFecha, cierreFecha, clave_cierre, problema, nombrEncargado, nombreCierre, atendidaFecha, andonStatus }
+                data: { id_andon, descripcionProblema, accionAtendida, accionCierre, nombreEmpleado, departamento, numeroEmpleado, creacionFecha, cierreFecha, clave_cierre, problema, nombrEncargado, nombreCierre, atendidaFecha, andonStatus, area, subarea, estacion }
             });
         });
     });
@@ -461,6 +590,7 @@ controller.dashboard_POST = (req, res) => {
     selectedMonth = req.body.month_selected
     selectedYear = req.body.year_selected
     selectedDepartment = req.body.department_selected
+    selectedArea = req.body.area;
 
 
     funcion.controllerDashCount('abiertas', selectedMonth, selectedYear, selectedDepartment, "Abierta", (err, result2) => {
@@ -475,17 +605,27 @@ controller.dashboard_POST = (req, res) => {
                 funcion.controllerNombreDepartamento(selectedDepartment, (err, result5) => {
                     if (err) throw err;
 
-                    funcion.controllerDashSeleccion(selectedMonth, selectedYear, selectedDepartment, (err, result6) => {
+                    funcion.controllerAreaNombre(selectedArea, (err, result8) => {
                         if (err) throw err;
 
-                        andonAbiertas = result2[0].abiertas
-                        andonAtendidas = result3[0].atendidas
-                        andonCerradas = result4[0].cerradas
-                        andonDepartamento = result5[0].nombre
-                        andonSeleccion = result6
+                        funcion.controllerDashSeleccion(selectedMonth, selectedYear, selectedDepartment, (err, result6) => {
+                            if (err) throw err;
 
-                        res.render('dashboard_view.ejs', {
-                            data: { andonAbiertas, andonAtendidas, andonCerradas, andonDepartamento, andonSeleccion, selectedMonth, selectedYear }
+                            funcion.controllerDashSeleccionArea(selectedArea, (err, result7) => {
+                                if (err) throw err;
+
+                                andonAbiertas = result2[0].abiertas
+                                andonAtendidas = result3[0].atendidas
+                                andonCerradas = result4[0].cerradas
+                                andonDepartamento = result5[0].nombre
+                                andonSeleccion = result6
+                                andonSeleccionArea = result7
+                                andonArea= result8
+
+                                res.render('dashboard_view.ejs', {
+                                    data: { andonAbiertas, andonAtendidas, andonCerradas, andonDepartamento, andonSeleccion, selectedMonth, selectedYear, andonSeleccionArea, andonArea }
+                                });
+                            });
                         });
                     });
                 });

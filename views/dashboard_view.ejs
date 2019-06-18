@@ -14,103 +14,124 @@
 
     <!-- Tarjetas -->
     <div class="row">
-   <!-- andon Atendidas -->
-   <div class="animated fadeInLeft fast col-xl-3 col-md-6 mb-4">
-    <div class="Card border-left-atendidas shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas</div>
+
+            <%
+            let total = data.andonAbiertas + data.andonAtendidas + data.andonCerradas
+            let porcentajeAbiertas =    Math.round(data.andonAbiertas  * 100 / total) *100/100
+            let porcentajeAtendidas =   Math.round(data.andonAtendidas * 100 / total) *100/100
+            let porcentajeCerradas =    Math.round(data.andonCerradas  * 100 / total) *100/100
+            %>
+        <!-- andon Atendidas -->
+        <div class="animated fadeInLeft fast col-xl-3 col-md-6 mb-4">
+            <div class="Card border-left-atendidas shadow h-100 py-2">
+                <div class="card-body">
                     <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=data.andonAtendidas%>
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Atendidas: <%=data.andonAtendidas%></div>
+
+                            <div class="progress">
+                                    <div class="animated fadeInLeft fast progress-bar progress-bar-striped bg-info"
+                                        role="progressbar" style="width: <%=porcentajeAtendidas%>%"
+                                        aria-valuenow="<%=porcentajeAtendidas%>" aria-valuemin="0" aria-valuemax="<%=total%>">
+                                        <%=porcentajeAtendidas%>%</div>
+                                </div>
+                            <div class="row no-gutters align-items-center">
+
                             </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
-                <div class="col-auto">
-                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- andon Abiertas -->
-<div class="animated fadeInLeft fast cdelay-1 col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-abiertas shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas
+        <!-- andon Abiertas -->
+        <div class="animated fadeInLeft fast cdelay-1 col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-abiertas shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Abiertas: <%=data.andonAbiertas%>
+                            </div>
+                            <div class="progress">
+                                    <div class="animated fadeInLeft fast cdelay-1 progress-bar progress-bar-striped bg-danger"
+                                        role="progressbar" style="width: <%=porcentajeAbiertas%>%"
+                                        aria-valuenow="<%=porcentajeAbiertas%>" aria-valuemin="0" aria-valuemax="<%=total%>">
+                                        <%=porcentajeAbiertas%>%</div>
+                                </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="far fa-clipboard fa-2x text-gray-300"></i>
+                        </div>
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.andonAbiertas%></div>
-                </div>
-                <div class="col-auto">
-                    <i class="far fa-clipboard fa-2x text-gray-300"></i>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- andon Cerradas -->
-<div class="animated fadeInLeft fast cdelay-2 col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-cerradas shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas
+        <!-- andon Cerradas -->
+        <div class="animated fadeInLeft fast cdelay-2 col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-cerradas shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cerradas: <%=data.andonCerradas%>
+                            </div>
+                            <div class="progress">
+                                    <div class="animated fadeInLeft fast cdelay-2 progress-bar progress-bar-striped bg-success"
+                                        role="progressbar" style="width: <%=porcentajeCerradas%>%"
+                                        aria-valuenow="<%=porcentajeCerradas%>" aria-valuemin="0" aria-valuemax="<%=total%>">
+                                        <%=porcentajeCerradas%>%</div>
+                                </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                        </div>
                     </div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><%=data.andonCerradas%></div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="animated fadeInLeft fast cdelay-3 col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-excel shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Decargar tabla <span
-                            class="fas fa-chevron-right"></span>
+        <div class="animated fadeInLeft fast cdelay-3 col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-excel shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Decargar tabla <span
+                                    class="fas fa-chevron-right"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-success" onclick="exportTableToExcel('myTable')"><span
+                                    class="fas fa-file-excel 2x"></span></button>
+                        </div>
                     </div>
-
-                </div>
-                <div class="col-auto">
-                    <button class="btn btn-success" onclick="exportTableToExcel('myTable')"><span
-                            class="fas fa-file-excel 2x"></span></button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
 
     <!-- /Tarjetas -->
 
-        <!-- Graficas -->
-        <h2 class="text-center text-secondary"><%=data.andonDepartamento%></h2>
+    <!-- Graficas -->
+    <h2 class="text-center text-secondary"><%=data.andonDepartamento%> <%=data.selectedMonth%>-<%=data.selectedYear %></h2>
     <div class="horizontalBar ">
-        <div class="col-lg-12 ">
 
-            <div class="card " style="width: 100%; height: 250px;">
-                <div class="card-header text-center text-white bg-secondary">Fecha: <%=data.selectedMonth%>-<%=data.selectedYear %></div>
-                <div class="card-body">
-                    <canvas class="" id="chartMant1" width="95" height="10"></canvas>
+        <h4 class="text-center text-secondary"><%=data.andonArea%></h4>
+        <div class="horizontalBar ">
+            <div class="col-lg-12 ">
+
+                <div class="card " style="width: 100%; height: 250px;">
+                    <div class="card-header text-center text-white bg-secondary"></div>
+                    <div class="card-body">
+                        <canvas class="" id="chartMant3" width="95" height="10"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
-        <br>
-        <br>
-        <div class="bar ">
             <div class="col-lg-12 ">
-    
+
                 <div class="card " style="width: 100%; height: 300px;">
                     <div class="card-header text-center text-white bg-secondary">Tiempo muerto en minutos</div>
                     <div class="card-body">
@@ -118,97 +139,113 @@
                     </div>
                 </div>
             </div>
-        <!-- /Graficas -->
+            <!-- /Graficas -->
 
-<!-- Tabla -->
-<br>
-<br>
-<div class="table table-responsive mt-10" id="table">
-    <table id="myTable" class="table table-bordered table-striped">
-        <thead class="thead-dark">
+            <!-- Tabla -->
+            <br>
+            <br>
+            <div class="table table-responsive mt-10" id="table">
+                <table id="myTable" class="table table-bordered table-striped">
+                    <thead class="thead-dark">
 
-            <th>Problemas Comunes</th>
-            <th>Total problemas</th>
-            <th>Tiempo muerto Minutos</th>
- 
-        </thead>
+                        <th>Problemas Comunes</th>
+                        <th>Total problemas</th>
+                        <th>Tiempo muerto Minutos</th>
 
-        <tbody>
-            <tr>
-                <% for(var i = 0; i < data.andonSeleccion.length;i++ ){ %>
-                <td><%= data.andonSeleccion[i].andon_fallas %></td>
-                <td><%= data.andonSeleccion[i].problemas_comunes_count %></td>
-                <td><%= Math.floor(data.andonSeleccion[i].tiempo_muerto ); %></td>
-                
-            </tr>
-                <% }; %>
-        </tbody>
-    </table>
-</div>
+                    </thead>
 
-<!--/ Tabla -->
+                    <tbody>
+                        <tr>
+                            <% for(var i = 0; i < data.andonSeleccion.length;i++ ){ %>
+                            <td><%= data.andonSeleccion[i].andon_fallas %></td>
+                            <td><%= data.andonSeleccion[i].problemas_comunes_count %></td>
+                            <td><%= Math.floor(data.andonSeleccion[i].tiempo_muerto ); %></td>
 
+                        </tr>
+                        <% }; %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--/ Tabla -->
+
+        </div>
+        <!--/ Contenedor Principal  -->
     </div>
-    <!--/ Contenedor Principal  -->
-</div>
-<% include footer %>
+    <% include footer %>
 
-<script>
+    <script>
 
 
+        let arr = []
+        let tiempo_muerto = []
 
-    new Chart(document.getElementById("chartMant1"), {
-        type: 'horizontalBar',
-        data: {
-            labels: ["Atendidas","Abiertas","Cerradas"],
-            datasets: [
-                {
-                    label: "Andons",
-                    backgroundColor: ["rgb(91, 203, 255)", "rgb(255, 91, 91)", "rgb(111, 255, 92)"],
-                    data: [<%=data.andonAtendidas%>,<%=data.andonAbiertas%>,<%=data.andonCerradas%>]
-                }
-            ]
-        },
-        options: {
-            legend: { display: false },
-            title: {
-                display: true,
-                text: 'Andons'
-            }
-        }
-    });
-    
-let arr = []
-let tiempo_muerto = []
+            <%for (var i = 0; i < data.andonSeleccion.length; i++) { %>
+                arr.push("<%=data.andonSeleccion[i].andon_fallas%>")
+                tiempo_muerto.push("<%=Math.floor(data.andonSeleccion[i].tiempo_muerto)%>")
 
-<%for (var i = 0; i <data.andonSeleccion.length;i++){ %>
-    arr.push("<%=data.andonSeleccion[i].andon_fallas%>")
-    tiempo_muerto.push("<%=Math.floor(data.andonSeleccion[i].tiempo_muerto)%>")
+                    <%}%>
 
-<%}%>
+                        new Chart(document.getElementById("chartMant2"), {
+                            type: 'line',
+                            data: {
+                                labels: arr,
+                                datasets: [
+                                    {
+                                        label: "Min",
+                                        backgroundColor: "rgba(91, 203, 255, 0.486)",
+                                        data: tiempo_muerto,
+                                        borderColor: "rgb(91, 203, 255)"
+                                    }
+                                ]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Tiempo muerto'
+                                }
+                            }
+                        });
 
-    new Chart(document.getElementById("chartMant2"), {
-        type: 'line',
-        data: {
-            labels:arr,
-            datasets: [
-                {
-                    label: "Min",
-                    backgroundColor: "rgba(91, 203, 255, 0.486)",
-                    data: tiempo_muerto,
-                    borderColor: "rgb(91, 203, 255)"
-                }
-            ]
-        },
-        options: {
-            legend: { display: false },
-            title: {
-                display: true,
-                text: 'Tiempo muerto'
-            }
-        }
-    });
-</script>
+
+        arr2 = []
+        arr3 = []
+        arr4=[]
+            <%for (var i = 0; i < data.andonSeleccionArea.length; i++) { %>
+                arr2.push("<%=data.andonSeleccionArea[i].subarea%>")
+                <%}%>
+
+                <%for (var i = 0; i < data.andonSeleccionArea.length; i++) { %>
+                arr3.push("<%=data.andonSeleccionArea[i].TOTAL%>")
+                <%}%>
+
+                <%for (var i = 0; i < data.andonSeleccionArea.length; i++) { %>
+                arr4.push("rgb(240, 173, 78)")
+                <%}%>
+
+
+                    new Chart(document.getElementById("chartMant3"), {
+                        type: 'bar',
+                        data: {
+                            labels: arr2,
+                            datasets: [
+                                {
+                                    label: "Andons",
+                                    backgroundColor: arr4,
+                                    data: arr3
+                                }
+                            ]
+                        },
+                        options: {
+                            legend: { display: false },
+                            title: {
+                                display: true,
+                                text: 'Area Afectada'
+                            }
+                        }
+                    });
+    </script>
 
 
 

@@ -8,6 +8,7 @@ router.get('/', routesController.index_GET);
 router.get('/login/:id', routesController.login);
 router.get('/crear_andon/login', routesController.crear_andon_GET);
 router.post('/crear_andon', routesController.crear_andon_POST);
+router.post('/crear_andon2', routesController.crear_andon2_POST);
 router.post('/guardar_andon', routesController.guardar_andon_POST);
 router.get('/andons', routesController.andons_GET);
 router.post('/cerrar_andon', routesController.cerrar_andon_POST);

@@ -24,7 +24,7 @@
                                 <input readonly type="text" class="form-control" id="gafete" value="<%= data4%>" name="gafete">
                               </div>
                             </div>
-              <!------->                
+              <!------->               
                     <div class="form-group">
                         <label for="Titulo">Departamento</label>
                         <select class="form-control" name="departamento" id="departamento" >
@@ -36,23 +36,20 @@
                     </div>
                 
                     <div class="form-group">
-                        <label for="Titulo">Problemas Comunes</label>
-                        <select class="form-control" name="problema" id="problema" >
+                        <label for="Titulo">Area del Problema</label>
+                        <select class="form-control" name="area" id="area" >
                             <%if(data) { %>
                             <% for (var i = 0; i < data2.length; i++) { %>
-                            <option><%= data2[i].descripcion %></option>
+                            <option><%= data2[i].area%></option>
 
                             <% } %>
                             <% } %>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="Descripcion">Descripcion de la falla</label>
-                        <textarea type="text" class="form-control " rows="3" cols="100" wrap="hard" name="descripcion" required></textarea>
-                    </div>
+
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary"
-                            onclick="$('form').attr('action', '/guardar_andon');">Generar Andon</button>
+                            onclick="$('form').attr('action', '/crear_andon2');">Siguiente</button>
                     </div>
             </form>
         </div>

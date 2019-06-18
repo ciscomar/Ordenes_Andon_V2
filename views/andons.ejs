@@ -31,6 +31,9 @@
             <th>ID</th>
             <th>Departamento</th>
             <th>Problema</th>
+            <th>Area</th>
+            <th>Area Afectada</th>
+            <th>Estacion</th>
             <th>Descripcion de la falla</th>
             <th>Reportado por</th>
             <th>Fecha</th>
@@ -50,6 +53,9 @@
                 <td class="table_id"><%= data[i].id_andon %></td>
                 <td><%= data[i].nombre%></td>
                 <td><%= data[i].descripcion %></td>
+                <td><%= data[i].area %></td>
+                <td><%= data[i].subarea %></td>
+                <td><%= data[i].estacion%></td>
                 <td class="table_long_text"><%= data[i].descripcion_problema %></td>
                 <td><%= data[i].reporto %></td>
                 <td><%= formatted_date %></td>
