@@ -662,10 +662,10 @@ var j = schedule.scheduleJob('1 * * * * *', function () {
     //(escactual,nextesc,escbd,tiempoescalamiento)
 
     funcion.sendEscalamiento(0, 1, 'esc1', 1);
-    //funcion.sendEscalamiento(1, 2, 'esc2', 3);
-    //funcion.sendEscalamiento(2, 3, 'esc3', 5);
-    //funcion.sendEscalamiento(3, 4, 'esc4', 7);
-    //funcion.sendEscalamiento(4, 5, 'esc5', 9);
+    funcion.sendEscalamiento(1, 2, 'esc2', 15);
+    funcion.sendEscalamiento(2, 3, 'esc3', 30);
+    funcion.sendEscalamiento(3, 4, 'esc4', 60);
+    funcion.sendEscalamiento(4, 5, 'esc5', 120);
 
 });
 

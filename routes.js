@@ -21,6 +21,9 @@ router.post('/dashboard_view', routesController.dashboard_POST);
 router.post('/alta_escalamiento', routesController.alta_escalamiento_POST);
 router.post('/alta_escalamiento2', routesController.alta_escalamiento2_POST);
 router.post('/guardar_escalamiento', routesController.guardar_escalamiento_POST);
+router.post('/alta_acceso', routesController.alta_acceso_POST);
+router.post('/guardar_acceso', routesController.guardar_acceso_POST);
+router.post('/delete_acceso', routesController.delete_acceso_POST);
 
 router.get('*', (req, res) => {
   res.send('404 Page not found');

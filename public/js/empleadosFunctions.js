@@ -53,6 +53,19 @@ funcionE.empleadosTodos = (callback) => {
 
 }
 
+funcionE.empleadosTodosId = (callback) => {
+
+    dbE.query(`SELECT emp_id FROM del_empleados ORDER BY emp_correo ASC`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+
+}
+
 funcionE.empleadosAccessAll = (acc_andon, sign, callback) => {
 
     dbE.query(`SELECT acc_id FROM del_accesos WHERE acc_andon ${sign}${acc_andon}`, function (err, result, fields) {
@@ -63,6 +76,51 @@ funcionE.empleadosAccessAll = (acc_andon, sign, callback) => {
             callback(null, result);
         }
     })
+
+}
+
+funcionE.empleadosAccesos = (callback) => {
+
+    dbE.query(`SELECT acc_id, acc_andon FROM del_accesos WHERE acc_andon>0`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+
+}
+
+funcionE.empleadosInsertAcceso = (acc_id, acc_andon, callback) => {
+
+    dbE.query(`INSERT INTO del_accesos (acc_id, acc_andon)
+    VALUES('${acc_id}',${acc_andon})
+    ON DUPLICATE KEY UPDATE acc_andon = VALUES(acc_andon)`, function (err, result, fields) {
+            if (err) {
+
+                callback(err, null);
+
+            } else {
+
+                callback(null, result);
+            }
+        })
+
+}
+
+funcionE.empleadosDeleteAcceso = (acc_id, callback) => {
+
+    dbE.query(`UPDATE del_accesos SET acc_andon=0 WHERE acc_id=${acc_id}`, function (err, result, fields) {
+            if (err) {
+
+                callback(err, null);
+
+            } else {
+
+                callback(null, result);
+            }
+        })
 
 }
 

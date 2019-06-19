@@ -51,7 +51,15 @@ controller.login = (req, res) => {
                             data: loginId, data2: result
                         });
                     });
-                }
+                } else
+                    if (loginId == 'alta_acceso') {
+                        funcionE.empleadosAccessAll(3, '=', (err, result) => {
+
+                            res.render('login.ejs', {
+                                data: loginId, data2: result
+                            });
+                        });
+                    }
 
 
 };
@@ -620,7 +628,7 @@ controller.dashboard_POST = (req, res) => {
                                 andonDepartamento = result5[0].nombre
                                 andonSeleccion = result6
                                 andonSeleccionArea = result7
-                                andonArea= result8
+                                andonArea = result8
 
                                 res.render('dashboard_view.ejs', {
                                     data: { andonAbiertas, andonAtendidas, andonCerradas, andonDepartamento, andonSeleccion, selectedMonth, selectedYear, andonSeleccionArea, andonArea }
@@ -719,13 +727,92 @@ controller.guardar_escalamiento_POST = (req, res) => {
 
     funcion.controllerInsertEscalamiento(dep1, dep2, dep3, dep4, dep5, esc1, esc2, esc3, esc4, esc5, correo, (err, result) => {
 
-        res.redirect('/login/alta_escalamiento')
+
+        funcionE.empleadosTodos((err, result) => {
+            if (err) throw err;
+
+            funcion.controllerEscalamientoAll((err, result2) => {
+                if (err) throw err;
+
+                res.render('alta_escalamiento.ejs', {
+                    data: result, data2: result2
+                });
+            });
+        });
+
+
     });
 
 
 
 
 };
+
+//Alta_escalAmiento
+controller.alta_acceso_POST = (req, res) => {
+    numeroEmpleado = req.body.user;
+
+    funcionE.empleadosTodosId((err, result) => {
+        if (err) throw err;
+
+        funcionE.empleadosAccesos((err, result2) => {
+            if (err) throw err;
+
+            res.render('alta_acceso.ejs', {
+                data: result, data2: result2
+            });
+        });
+    });
+
+};
+
+controller.guardar_acceso_POST = (req, res) => {
+    gaffete = req.body.gaffete;
+    acceso = req.body.acceso;
+
+    if(acceso=='Atender/Crear Andons'){
+        acceso=2;
+    }else{
+        acceso=1
+    }
+
+    funcionE.empleadosInsertAcceso(gaffete, acceso,(err, result3) => {
+        if (err) throw err;
+        funcionE.empleadosTodosId((err, result) => {
+            if (err) throw err;
+
+            funcionE.empleadosAccesos((err, result2) => {
+                if (err) throw err;
+
+                res.render('alta_acceso.ejs', {
+                    data: result, data2: result2
+                });
+            });
+        });
+    });
+};
+
+controller.delete_acceso_POST = (req, res) => {
+    gaffete = req.body.gaffete2;
+
+
+    funcionE.empleadosDeleteAcceso(gaffete,(err, result3) => {
+        if (err) throw err;
+        funcionE.empleadosTodosId((err, result) => {
+            if (err) throw err;
+
+            funcionE.empleadosAccesos((err, result2) => {
+                if (err) throw err;
+
+                res.render('alta_acceso.ejs', {
+                    data: result, data2: result2
+                });
+            });
+        });
+    });
+};
+
+
 
 
 
