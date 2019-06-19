@@ -2,6 +2,19 @@ const funcionE = {};
 const dbE = require('../db/connEmpleados');
 const db = require('../db/conn');
 
+funcionE.empleadosAll = ( callback) => {
+
+    dbE.query(`SELECT * from del_empleados`, function (err, result, fields) {
+        if (err) {
+            callback(err, null);
+        } else {
+
+            callback(null, result);
+        }
+    })
+
+}
+
 funcionE.empleadosCorreo = (gafete, callback) => {
 
     dbE.query(`SELECT emp_correo from del_empleados WHERE emp_id= ${gafete}`, function (err, result, fields) {

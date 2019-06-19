@@ -758,8 +758,12 @@ controller.alta_acceso_POST = (req, res) => {
         funcionE.empleadosAccesos((err, result2) => {
             if (err) throw err;
 
-            res.render('alta_acceso.ejs', {
-                data: result, data2: result2
+            funcionE.empleadosAll((err, result3) => {
+                if (err) throw err;
+
+                res.render('alta_acceso.ejs', {
+                    data: result, data2: result2, data3: result3
+                });
             });
         });
     });
@@ -770,13 +774,13 @@ controller.guardar_acceso_POST = (req, res) => {
     gaffete = req.body.gaffete;
     acceso = req.body.acceso;
 
-    if(acceso=='Atender/Crear Andons'){
-        acceso=2;
-    }else{
-        acceso=1
+    if (acceso == 'Atender/Crear Andons') {
+        acceso = 2;
+    } else {
+        acceso = 1
     }
 
-    funcionE.empleadosInsertAcceso(gaffete, acceso,(err, result3) => {
+    funcionE.empleadosInsertAcceso(gaffete, acceso, (err, result3) => {
         if (err) throw err;
         funcionE.empleadosTodosId((err, result) => {
             if (err) throw err;
@@ -796,7 +800,7 @@ controller.delete_acceso_POST = (req, res) => {
     gaffete = req.body.gaffete2;
 
 
-    funcionE.empleadosDeleteAcceso(gaffete,(err, result3) => {
+    funcionE.empleadosDeleteAcceso(gaffete, (err, result3) => {
         if (err) throw err;
         funcionE.empleadosTodosId((err, result) => {
             if (err) throw err;
