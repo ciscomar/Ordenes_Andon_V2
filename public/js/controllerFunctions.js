@@ -187,7 +187,7 @@ funcion.controllerEstacionAndon = (id_andon, callback) => {
 }
 
 funcion.controllerEstaciones = (callback) => {
-    db.query(`SELECT * FROM otplus.andon_estaciones
+    db.query(`SELECT * FROM andon.andon_estaciones
     INNER JOIN andon_subarea ON andon_estaciones.id_subarea = andon_subarea.id_subarea`, function (err, result, fields) {
             if (err) {
                 callback(err, null);
@@ -481,7 +481,7 @@ funcion.controllerDashCount = (as, selectedMonth, selectedYear, selectedDepartme
 funcion.controllerDashSeleccion = (selectedMonth, selectedYear, selectedDepartment, callback) => {
 
     db.query(`SELECT COUNT(id_andon) AS problemas_comunes_count, andon_fallas.descripcion as andon_fallas, departamento.nombre as departamento , andon.tiempo_muerto
-    FROM otplus.andon, otplus.andon_fallas, otplus.departamento
+    FROM andon.andon, andon.andon_fallas, andon.departamento
     WHERE andon.problemas_comunes = andon_fallas.id 
     AND andon.departamento = departamento.id_departamento 
     AND MONTH(andon.fecha_inicio) = ${selectedMonth}  
@@ -503,7 +503,7 @@ funcion.controllerDashSeleccion = (selectedMonth, selectedYear, selectedDepartme
 funcion.controllerDashSeleccionArea = (area, callback) => {
 
     db.query(`SELECT andon.id_subarea, count(*) AS TOTAL, andon_subarea.subarea AS subarea 
-    FROM otplus.andon, otplus.andon_subarea 
+    FROM andon.andon, andon.andon_subarea 
     WHERE andon.id_area =${area} 
     AND andon.id_subarea = andon_subarea.id_subarea 
     GROUP BY andon.id_subarea`, function (err, result, fields) {
