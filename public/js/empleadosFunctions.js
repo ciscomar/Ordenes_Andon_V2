@@ -28,6 +28,7 @@ funcionE.empleadosCorreo = (gafete, callback) => {
 
 }
 
+/*
 funcionE.empleadosCorreoDep = (gafeteAcc, id_depE, callback) => {
 
     dbE.query(`SELECT emp_correo from del_empleados WHERE emp_id= ${gafeteAcc} AND emp_dep=${id_depE}`, function (err, result, fields) {
@@ -40,7 +41,7 @@ funcionE.empleadosCorreoDep = (gafeteAcc, id_depE, callback) => {
     })
 
 }
-
+*/
 funcionE.empleadosNombre = (gafete, callback) => {
     dbE.query(`SELECT emp_nombre FROM del_empleados WHERE emp_id=${gafete}`, function (err, result, fields) {
         if (err) {

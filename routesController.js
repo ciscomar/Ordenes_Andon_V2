@@ -211,6 +211,7 @@ controller.guardar_andon_POST = (req, res) => {
             });
 
             //Enviar Correo Empleados del Departamento
+            /*
             funcionE.empleadosAccessAll(2, '=', (err, gafeteAcc) => {
 
                 for (var i = 0; i < gafeteAcc.length; i++) {
@@ -253,6 +254,8 @@ controller.guardar_andon_POST = (req, res) => {
                     });
                 }
             });
+*/
+
         });
     });
 };
@@ -788,8 +791,12 @@ controller.guardar_acceso_POST = (req, res) => {
             funcionE.empleadosAccesos((err, result2) => {
                 if (err) throw err;
 
-                res.render('alta_acceso.ejs', {
-                    data: result, data2: result2
+                funcionE.empleadosAll((err, result3) => {
+                    if (err) throw err;
+
+                    res.render('alta_acceso.ejs', {
+                        data: result, data2: result2, data3: result3
+                    });
                 });
             });
         });
@@ -807,9 +814,12 @@ controller.delete_acceso_POST = (req, res) => {
 
             funcionE.empleadosAccesos((err, result2) => {
                 if (err) throw err;
+                funcionE.empleadosAll((err, result3) => {
+                    if (err) throw err;
 
-                res.render('alta_acceso.ejs', {
-                    data: result, data2: result2
+                    res.render('alta_acceso.ejs', {
+                        data: result, data2: result2, data3: result3
+                    });
                 });
             });
         });
