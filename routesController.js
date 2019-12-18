@@ -24,42 +24,47 @@ controller.login = (req, res) => {
         funcionE.empleadosAccessAll(3, '=', (err, result) => {
 
             res.render('login.ejs', {
-                data: loginId, data2: result
+                data: loginId,
+                data2: result
             });
         });
     } else
-        if (loginId == 'crear_andon') {
-            funcionE.empleadosAccessAll(1, '>=', (err, result) => {
+    if (loginId == 'crear_andon') {
+        funcionE.empleadosAccessAll(1, '>=', (err, result) => {
 
-                res.render('login.ejs', {
-                    data: loginId, data2: result
-                });
+            res.render('login.ejs', {
+                data: loginId,
+                data2: result
             });
-        } else
-            if (loginId == 'cerrar_andon') {
-                funcionE.empleadosAccessAll(2, '>=', (err, result) => {
+        });
+    } else
+    if (loginId == 'cerrar_andon') {
+        funcionE.empleadosAccessAll(2, '>=', (err, result) => {
 
-                    res.render('login.ejs', {
-                        data: loginId, data2: result
-                    });
-                });
-            } else
-                if (loginId == 'historial') {
-                    funcionE.empleadosAccessAll(1, '>=', (err, result) => {
+            res.render('login.ejs', {
+                data: loginId,
+                data2: result
+            });
+        });
+    } else
+    if (loginId == 'historial') {
+        funcionE.empleadosAccessAll(1, '>=', (err, result) => {
 
-                        res.render('login.ejs', {
-                            data: loginId, data2: result
-                        });
-                    });
-                } else
-                    if (loginId == 'alta_acceso') {
-                        funcionE.empleadosAccessAll(3, '=', (err, result) => {
+            res.render('login.ejs', {
+                data: loginId,
+                data2: result
+            });
+        });
+    } else
+    if (loginId == 'alta_acceso') {
+        funcionE.empleadosAccessAll(3, '=', (err, result) => {
 
-                            res.render('login.ejs', {
-                                data: loginId, data2: result
-                            });
-                        });
-                    }
+            res.render('login.ejs', {
+                data: loginId,
+                data2: result
+            });
+        });
+    }
 
 
 };
@@ -76,7 +81,10 @@ controller.crear_andon_POST = (req, res) => {
                 if (err) throw err;
 
                 res.render('crear_andon.ejs', {
-                    data: result1, data2: result2, data3: result3, data4: numeroEmpleado
+                    data: result1,
+                    data2: result2,
+                    data3: result3,
+                    data4: numeroEmpleado
                 });
             });
         });
@@ -105,7 +113,14 @@ controller.crear_andon2_POST = (req, res) => {
                             if (err) throw err;
 
                             res.render('crear_andon2.ejs', {
-                                data: result1, data2: result2, data3: result3, data4: numeroEmpleado, data5: departamento, data6: area, data7: result4, data8: result6
+                                data: result1,
+                                data2: result2,
+                                data3: result3,
+                                data4: numeroEmpleado,
+                                data5: departamento,
+                                data6: area,
+                                data7: result4,
+                                data8: result6
                             });
                         });
                     });
@@ -159,7 +174,16 @@ controller.guardar_andon_POST = (req, res) => {
                             if (err) throw err;
 
                             res.render('guardar_andon.ejs', {
-                                data: { departamento, problema, descripcion, clave, id_andon, area, subarea, estacion }
+                                data: {
+                                    departamento,
+                                    problema,
+                                    descripcion,
+                                    clave,
+                                    id_andon,
+                                    area,
+                                    subarea,
+                                    estacion
+                                }
                             });
                         });
                     });
@@ -203,8 +227,27 @@ controller.guardar_andon_POST = (req, res) => {
                 accionCerrada = '';
 
                 dataEmail = {
-                    to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                    fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
+                    to,
+                    cc,
+                    subject,
+                    status,
+                    color,
+                    id_andon,
+                    creador,
+                    gafete,
+                    problema,
+                    descripcion,
+                    fecha,
+                    eclave,
+                    empleadoAtendida,
+                    fechaAtendida,
+                    accionAtendida,
+                    empleadoCerrada,
+                    fechaCerrada,
+                    accionCerrada,
+                    area,
+                    subarea,
+                    estacion
                 }
 
                 funcion.sendEmail(dataEmail);
@@ -289,7 +332,18 @@ controller.andons_GET = (req, res) => {
                                     andonEnsamble = result8[0].ensamble
 
                                     res.render('andons.ejs', {
-                                        data: result, data2: { andonAbiertas, andonAtendidas, andonCerradas }, data3: { andonExtrusion, andonVulca, andonEstampado, andonEnsamble }
+                                        data: result,
+                                        data2: {
+                                            andonAbiertas,
+                                            andonAtendidas,
+                                            andonCerradas
+                                        },
+                                        data3: {
+                                            andonExtrusion,
+                                            andonVulca,
+                                            andonEstampado,
+                                            andonEnsamble
+                                        }
                                     });
                                 });
                             });
@@ -313,7 +367,9 @@ controller.cerrar_andon_POST = (req, res) => {
 
 
             res.render('cerrar_andon.ejs', {
-                data: numeroEmpleado, data2: nombreEmpleado, data3: result4
+                data: numeroEmpleado,
+                data2: nombreEmpleado,
+                data3: result4
             });
         });
     });
@@ -354,7 +410,17 @@ controller.cerrar_andon2_POST = (req, res) => {
 
 
                             res.render('cerrar_andon2.ejs', {
-                                data: { numeroEmpleado, nombreEmpleado, id_andon, problema, id_clave, status, area, subarea, estacion }
+                                data: {
+                                    numeroEmpleado,
+                                    nombreEmpleado,
+                                    id_andon,
+                                    problema,
+                                    id_clave,
+                                    status,
+                                    area,
+                                    subarea,
+                                    estacion
+                                }
                             });
                         });
                     });
@@ -385,8 +451,8 @@ controller.cambio_andon_POST = (req, res) => {
     db.query(`SELECT * FROM andon WHERE id_andon = ${id_andon}`, function (err, result, fields) {
 
         andonFecha = result[0].fecha_inicio;
-        var startDate = new Date(andonFecha);//Fecha en que se creo la andon de trabajo
-        var endDate = new Date(current_date);//Fecha en la que se esta tendiendo la andon de trabajo, viene de cerrar_andon2(current_date)
+        var startDate = new Date(andonFecha); //Fecha en que se creo la andon de trabajo
+        var endDate = new Date(current_date); //Fecha en la que se esta tendiendo la andon de trabajo, viene de cerrar_andon2(current_date)
         var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
         minutos = (seconds / 60);
         var usuarioAtendida = result[0].usuario_atendida;
@@ -410,7 +476,19 @@ controller.cambio_andon_POST = (req, res) => {
                     if (err) throw err;
 
                     res.render('cambio_andon.ejs', {
-                        data: { accionTomada, nombreEmpleado, numeroEmpleado, id_andon, formatted_current_date, clave_cierre, problema, actividades, area, subarea, estacion }
+                        data: {
+                            accionTomada,
+                            nombreEmpleado,
+                            numeroEmpleado,
+                            id_andon,
+                            formatted_current_date,
+                            clave_cierre,
+                            problema,
+                            actividades,
+                            area,
+                            subarea,
+                            estacion
+                        }
                     });
                 });
 
@@ -441,8 +519,27 @@ controller.cambio_andon_POST = (req, res) => {
                         accionCerrada = '';
 
                         dataEmail = {
-                            to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                            fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
+                            to,
+                            cc,
+                            subject,
+                            status,
+                            color,
+                            id_andon,
+                            creador,
+                            gafete,
+                            problema,
+                            descripcion,
+                            fecha,
+                            eclave,
+                            empleadoAtendida,
+                            fechaAtendida,
+                            accionAtendida,
+                            empleadoCerrada,
+                            fechaCerrada,
+                            accionCerrada,
+                            area,
+                            subarea,
+                            estacion
                         }
 
                         funcion.sendEmail(dataEmail);
@@ -456,7 +553,19 @@ controller.cambio_andon_POST = (req, res) => {
                 funcion.controllerUpdateAndonC(accionTomada, actividades, formatted_current_date, minutos, nombreEmpleado, id_andon, (err, result) => {
 
                     res.render('cambio_andon.ejs', {
-                        data: { accionTomada, nombreEmpleado, numeroEmpleado, id_andon, formatted_current_date, clave_cierre, problema, actividades, area, subarea, estacion }
+                        data: {
+                            accionTomada,
+                            nombreEmpleado,
+                            numeroEmpleado,
+                            id_andon,
+                            formatted_current_date,
+                            clave_cierre,
+                            problema,
+                            actividades,
+                            area,
+                            subarea,
+                            estacion
+                        }
                     });
                 });
 
@@ -487,8 +596,27 @@ controller.cambio_andon_POST = (req, res) => {
                         accionCerrada = actividades;
 
                         dataEmail = {
-                            to, cc, subject, status, color, id_andon, creador, gafete, problema, descripcion, fecha, eclave, empleadoAtendida,
-                            fechaAtendida, accionAtendida, empleadoCerrada, fechaCerrada, accionCerrada, area, subarea, estacion
+                            to,
+                            cc,
+                            subject,
+                            status,
+                            color,
+                            id_andon,
+                            creador,
+                            gafete,
+                            problema,
+                            descripcion,
+                            fecha,
+                            eclave,
+                            empleadoAtendida,
+                            fechaAtendida,
+                            accionAtendida,
+                            empleadoCerrada,
+                            fechaCerrada,
+                            accionCerrada,
+                            area,
+                            subarea,
+                            estacion
                         }
 
                         funcion.sendEmail(dataEmail);
@@ -541,7 +669,19 @@ controller.historial_POST = (req, res) => {
 
 
                                     res.render('historial.ejs', {
-                                        data: result, data2: { andonAbiertas, andonAtendidas, andonCerradas }, data4: numeroEmpleado, data3: { andonExtrusion, andonVulca, andonEstampado, andonEnsamble }
+                                        data: result,
+                                        data2: {
+                                            andonAbiertas,
+                                            andonAtendidas,
+                                            andonCerradas
+                                        },
+                                        data4: numeroEmpleado,
+                                        data3: {
+                                            andonExtrusion,
+                                            andonVulca,
+                                            andonEstampado,
+                                            andonEnsamble
+                                        }
                                     });
                                 });
                             });
@@ -583,7 +723,26 @@ controller.revisar_POST = (req, res) => {
             if (err) throw err;
 
             res.render('revisar.ejs', {
-                data: { id_andon, descripcionProblema, accionAtendida, accionCierre, nombreEmpleado, departamento, numeroEmpleado, creacionFecha, cierreFecha, clave_cierre, problema, nombrEncargado, nombreCierre, atendidaFecha, andonStatus, area, subarea, estacion }
+                data: {
+                    id_andon,
+                    descripcionProblema,
+                    accionAtendida,
+                    accionCierre,
+                    nombreEmpleado,
+                    departamento,
+                    numeroEmpleado,
+                    creacionFecha,
+                    cierreFecha,
+                    clave_cierre,
+                    problema,
+                    nombrEncargado,
+                    nombreCierre,
+                    atendidaFecha,
+                    andonStatus,
+                    area,
+                    subarea,
+                    estacion
+                }
             });
         });
     });
@@ -634,7 +793,17 @@ controller.dashboard_POST = (req, res) => {
                                 andonArea = result8
 
                                 res.render('dashboard_view.ejs', {
-                                    data: { andonAbiertas, andonAtendidas, andonCerradas, andonDepartamento, andonSeleccion, selectedMonth, selectedYear, andonSeleccionArea, andonArea }
+                                    data: {
+                                        andonAbiertas,
+                                        andonAtendidas,
+                                        andonCerradas,
+                                        andonDepartamento,
+                                        andonSeleccion,
+                                        selectedMonth,
+                                        selectedYear,
+                                        andonSeleccionArea,
+                                        andonArea
+                                    }
                                 });
                             });
                         });
@@ -657,7 +826,8 @@ controller.alta_escalamiento_POST = (req, res) => {
             if (err) throw err;
 
             res.render('alta_escalamiento.ejs', {
-                data: result, data2: result2
+                data: result,
+                data2: result2
             });
         });
     });
@@ -677,7 +847,8 @@ controller.alta_escalamiento2_POST = (req, res) => {
         if (err) throw err;
 
         res.render('alta_escalamiento2.ejs', {
-            data: correo, data2: result
+            data: correo,
+            data2: result
         });
     });
 
@@ -738,7 +909,8 @@ controller.guardar_escalamiento_POST = (req, res) => {
                 if (err) throw err;
 
                 res.render('alta_escalamiento.ejs', {
-                    data: result, data2: result2
+                    data: result,
+                    data2: result2
                 });
             });
         });
@@ -765,7 +937,9 @@ controller.alta_acceso_POST = (req, res) => {
                 if (err) throw err;
 
                 res.render('alta_acceso.ejs', {
-                    data: result, data2: result2, data3: result3
+                    data: result,
+                    data2: result2,
+                    data3: result3
                 });
             });
         });
@@ -795,7 +969,9 @@ controller.guardar_acceso_POST = (req, res) => {
                     if (err) throw err;
 
                     res.render('alta_acceso.ejs', {
-                        data: result, data2: result2, data3: result3
+                        data: result,
+                        data2: result2,
+                        data3: result3
                     });
                 });
             });
@@ -818,17 +994,14 @@ controller.delete_acceso_POST = (req, res) => {
                     if (err) throw err;
 
                     res.render('alta_acceso.ejs', {
-                        data: result, data2: result2, data3: result3
+                        data: result,
+                        data2: result2,
+                        data3: result3
                     });
                 });
             });
         });
     });
 };
-
-
-
-
-
 
 module.exports = controller;

@@ -2,11 +2,33 @@
 <% include sidebar %>
 <% include navbar %>
 
+
 <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown">
+
+
     <div class="container">
+
+
+        <div class="row">
+
+            <div class="col-lg-11 text-right">
+                <div id="printButton">
+                    <button type="button" id="printJSPDFButton" class="btn btn-danger">
+                        <span id="printloading" role="status" style="width: 3rem; height: 3rem;"></span>
+                        <span class="fas fa-file-pdf" style="font-size: 3rem;"></span>
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+
         <img src="/img/TristoneLogo.png" class="rounded mx-auto d-block " alt="Tristone Flowtech">
         <h1 class="display-4 text-center animated slow">Sistema Andon</h1>
         <p class="lead text-center"></p>
+
+
+
 
         <%
         if(data.andonStatus == "Abierta"){
@@ -101,6 +123,213 @@
     </div>
 </div>
 <% include footer %>
+
+<script type="text/javascript" src="/js/imagenes.js"></script>
+
+<script>
+    $('#printJSPDFButton').click(function () {
+        $('#printloading').addClass('spinner-grow spinner-grow-sm');
+
+        setTimeout(() => {
+            $('#printloading').removeClass('spinner-grow spinner-grow-sm');
+        }, 2000);
+        setTimeout(printJSPDF, 300);
+    })
+
+
+
+    function printJSPDF() {
+        var doc = new jsPDF('portrait', '', 'letter');
+
+        //  Imagen barra
+        doc.addImage(logo, 'PNG', 90, 5, 45, 30, undefined, 'FAST')
+
+        // Texto Titulo
+        doc.setFontSize(25)
+        doc.setFont("helvatica");
+        doc.text(85, 45, 'Sistema Andon')
+
+        // // Linea separador
+        // doc.setDrawColor(91, 155, 213);
+        // doc.setLineWidth(.1);
+        // doc.line(36, 36, 190, 36)
+
+        // Square 
+        ///////////////////////////////
+
+        let colorSuccess = doc.setFillColor(40, 167, 69);
+        let colorInfo = doc.setFillColor(23, 162, 184);
+        let colorDanger = doc.setFillColor(220, 63, 69);
+
+
+        if ('<%=data.andonStatus%>' == "Cerrada") {
+            doc.setFillColor(40, 167, 69);
+        }else if ('<%=data.andonStatus%>' == "Atendida") {
+            doc.setFillColor(23, 162, 184);
+        }else{
+            doc.setFillColor(220, 63, 69);
+        }
+
+        ///////////////////////////////
+        doc.rect(14, 48, 190, 8, 'F');
+
+
+        // Texto en Square 
+        doc.setFontSize(12)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(255, 255, 255);
+        ///////////////////////////////
+        doc.text(100, 53, '<%=data.andonStatus%>')
+        ///////////////////////////////
+
+        // Linea separador
+        doc.setDrawColor(171, 171, 171);
+        doc.setLineWidth(.1);
+
+
+        // Texto "TABLA" 
+        doc.setFontSize(10)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(0, 0, 0);
+
+        doc.text(18, 65, 'ID')
+        doc.text(78, 65, '<%= data.id_andon%>')
+        doc.line(18, 67, 200, 67)
+
+        doc.text(18, 75, 'Nombre del creador')
+        doc.text(78, 75, '<%= data.nombreEmpleado%>')
+        doc.line(18, 77, 200, 77)
+
+        doc.text(18, 85, 'Numero de empleado')
+        doc.text(78, 85, '<%= data.numeroEmpleado%>')
+        doc.line(18, 87, 200, 87)
+
+        doc.text(18, 95, 'Problema')
+        doc.text(78, 95, '<%= data.problema%>')
+        doc.line(18, 97, 200, 97)
+
+        doc.text(18, 105, 'Area')
+        doc.text(78, 105, '<%= data.area%>')
+        doc.line(18, 107, 200, 107)
+
+        doc.text(18, 115, 'Area Afectada')
+        doc.text(78, 115, '<%= data.subarea%>')
+        doc.line(18, 117, 200, 117)
+
+        doc.text(18, 125, 'Estacion')
+        doc.text(78, 125, '<%= data.estacion%>')
+        doc.line(18, 127, 200, 127)
+
+
+        doc.text(18, 135, 'Descripcion problema')
+        doc.setFontSize(6)
+        doc.text(78, 135, `<%= data.descripcionProblema%>`)
+        doc.line(18, 138, 200, 137)
+
+        doc.setFontSize(10)
+        doc.text(18, 145, 'Fecha de generacion')
+        doc.text(78, 145, '<%= data.creacionFecha%>')
+        doc.line(18, 147, 200, 147)
+
+
+        ///////////////////////////////
+        ///////////////////////////////
+
+        // Square 
+
+        doc.setFillColor(52, 58, 64);
+        doc.rect(14, 157, 190, 8, 'F');
+
+        // Texto en Square 
+        doc.setFontSize(12)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(255, 255, 255);
+        ///////////////////////////////
+        doc.text(100, 162, '<%=data.departamento%>')
+        ///////////////////////////////
+
+        // Square 
+        doc.setFillColor(23, 162, 184);
+        doc.rect(14, 165, 190, 8, 'F');
+
+        // Texto en Square 
+        doc.setFontSize(12)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(255, 255, 255);
+        doc.text(95, 170, 'Informacion Atendida')
+
+
+        // Texto "TABLA" 
+        doc.setFontSize(10)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(0, 0, 0);
+
+        doc.text(18, 182, 'Atendida por')
+        doc.text(78, 182, '<%= data.nombrEncargado%>')
+        doc.line(18, 184, 200, 184)
+
+        doc.text(18, 192, 'Fecha atendida')
+        doc.text(78, 192, '<%= data.atendidaFecha%>')
+        doc.line(18, 194, 200, 194)
+
+        doc.text(18, 202, 'Acciones tomadas')
+        doc.text(78, 202, '<%= data.accionAtendida%>')
+        doc.line(18, 204, 200, 204)
+
+        ///////////////////////////////
+        ///////////////////////////////
+
+
+        // Square 
+        doc.setFillColor(40, 167, 69);
+        doc.rect(14, 214, 190, 8, 'F');
+
+        // Texto en Square 
+        doc.setFontSize(12)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(255, 255, 255);
+        doc.text(95, 219, 'Informacion Cerrada')
+
+
+        // Texto "TABLA" 
+        doc.setFontSize(10)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(0, 0, 0);
+
+        doc.text(18, 234, 'Cerrada por')
+        doc.text(78, 234, '<%= data.nombreCierre%>')
+        doc.line(18, 236, 200, 236)
+
+        doc.text(18, 244, 'Fecha de cierre')
+        doc.text(78, 244, '<%= data.cierreFecha%>')
+        doc.line(18, 246, 200, 246)
+
+        doc.text(18, 254, 'Acciones de cierre')
+        doc.text(78, 254, '<%= data.accionCierre%>')
+        doc.line(18, 256, 200, 256)
+
+        ///////////////////////////////
+        ///////////////////////////////
+        let today = new Date();
+        let formattedDate = today.toLocaleDateString("es-MX");
+        doc.setFontSize(8)
+        doc.text(10, 270, `Fecha de impresion: ${formattedDate}`)
+
+
+         doc.save(`Andon_<%= data.id_andon%>_${formattedDate}.pdf`);
+
+        //window.open(doc.output('bloburl'))
+    }
+
+
+</script>
 </div>
 </body>
 
