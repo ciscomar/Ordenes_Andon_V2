@@ -13,6 +13,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^2.6.1",
+    "exceljs": "^3.5.0",
     "express": "^4.16.4",
     "express-mailer": "^0.3.1",
     "jspdf": "^1.5.3",

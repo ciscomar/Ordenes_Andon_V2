@@ -6,6 +6,9 @@ const controller = {};
 const funcion = require('./public/js/controllerFunctions');
 const funcionE = require('./public/js/empleadosFunctions');
 
+//Require ExcelJs
+const Excel = require('exceljs');
+
 // Index GET
 controller.index_GET = (req, res) => {
     res.render('index.ejs');
@@ -1003,5 +1006,143 @@ controller.delete_acceso_POST = (req, res) => {
         });
     });
 };
+
+
+controller.descargar_andons_GET = (req, res) => {
+
+
+    funcion.controllerTablaAndon((err, andons) => {
+
+
+
+        // create workbook & add worksheet
+        let workbook = new Excel.Workbook();
+        let worksheet = workbook.addWorksheet('Andons');
+
+        let rows = []
+        let rows0 = []
+        let row = []
+        for (let i = 0; i < andons.length; i++) {
+
+            let date = andons[i].fecha_inicio
+            let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+            
+            rows.push("row" + [i])
+
+            row = [
+                andons[i].id_andon,
+                andons[i].nombre,
+                andons[i].descripcion,
+                andons[i].area,
+                andons[i].subarea,
+                andons[i].estacion,
+                andons[i].descripcion_problema,
+                andons[i].reporto,
+                formatted_date,
+                andons[i].tiempo_muerto,
+                andons[i].status
+            ]
+            rows0.push(row)
+        }
+
+        worksheet.addTable({
+            name: 'Tabla_Andons',
+            ref: 'A1',
+            sort: false,
+            style: {
+                theme: 'TableStyleMedium2',
+                showRowStripes: true,
+            },
+            columns: [{
+                    name: 'ID',
+                    filterButton: true,
+                    key: 'id'
+                },
+                {
+                    name: 'Departamento',
+                    filterButton: true
+                },
+                {
+                    name: 'Problema',
+                    filterButton: true
+                },
+                {
+                    name: 'Area',
+                    filterButton: true
+                },
+                {
+                    name: 'Area Afectada',
+                    filterButton: true
+                },
+                {
+                    name: 'Estacion',
+                    filterButton: true
+                },
+                {
+                    name: 'Descripcion de la falla',
+                    filterButton: true
+                },
+                {
+                    name: 'Reportado por',
+                    filterButton: true
+                },
+                {
+                    name: 'Fecha',
+                    filterButton: true
+                },
+                {
+                    name: 'Tiempo Muerto',
+                    filterButton: true
+                },
+                {
+                    name: 'Estatus',
+                    filterButton: true
+                },
+            ],
+            rows: rows0,
+        });
+
+
+        //Configuracion de primer hoja columnas
+        let nameColA = worksheet.getColumn('A');
+        let nameColB = worksheet.getColumn('B');
+        let nameColC = worksheet.getColumn('C');
+        let nameColD = worksheet.getColumn('D');
+        let nameColE = worksheet.getColumn('E');
+        let nameColF = worksheet.getColumn('F');
+        let nameColG = worksheet.getColumn('G');
+        let nameColH = worksheet.getColumn('H');
+        let nameColI = worksheet.getColumn('I');
+        let nameColJ = worksheet.getColumn('J');
+        let nameColK = worksheet.getColumn('K');
+        nameColA.numFmt = '0'
+        nameColA.width = 5
+        nameColB.width = 16
+        nameColC.width = 10
+        nameColD.width = 12
+        nameColE.width = 16
+        nameColF.width = 10
+        nameColG.width = 10
+        nameColH.width = 16
+        nameColI.width = 10
+        nameColJ.width = 17
+        nameColK.width = 9
+
+
+        //Current Date
+        let currentDate = new Date()
+        day = currentDate.getDate()
+        month = currentDate.getMonth() + 1,
+            year = currentDate.getFullYear()
+        date = day + "_" + month + "_" + year;
+        date = `${day}_${month}_${year}`
+
+        res.attachment(`Andons${date}.xlsx`)
+        workbook.xlsx.write(res).then(function () {
+            res.end()
+        });
+    })
+
+}
 
 module.exports = controller;
