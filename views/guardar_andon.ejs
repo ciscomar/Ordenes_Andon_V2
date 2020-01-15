@@ -165,7 +165,7 @@
 
         doc.text(18, 135, 'Descripcion problema')
         doc.setFontSize(6)
-        doc.text(78, 135, `<%= data.descripcion%>`)
+        doc.text(78, 135, '<%= data.descripcion%>')
         doc.line(18, 138, 200, 137)
 
         doc.setFontSize(10)
@@ -180,7 +180,7 @@
         doc.line(2, 155, 230, 155);
 
         doc.setFontSize(8)
-        doc.text(10, 151, `Fecha de impresion: ${formattedDate}`)
+        doc.text(10, 151, 'Fecha de impresion:' +formattedDate)
 
         doc.setLineDash([]);
         ///////////////////////////////
@@ -270,7 +270,7 @@
         ///////////////////////////////
 
         doc.setFontSize(8)
-        doc.text(10, 271, `Fecha de impresion: ${formattedDate}`)
+        doc.text(10, 271, 'Fecha de impresion:'+ formattedDate)
 
         //Imprimir directamente sin descargar, se requieren las dos lineas siguientes:
         doc.autoPrint();

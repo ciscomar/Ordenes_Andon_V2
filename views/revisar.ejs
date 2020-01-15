@@ -130,8 +130,8 @@
     $('#printJSPDFButton').click(function () {
         $('#printloading').addClass('spinner-grow spinner-grow-sm');
 
-        setTimeout(() => {
-            $('#printloading').removeClass('spinner-grow spinner-grow-sm');
+        setTimeout(function()  {
+         $('#printloading').removeClass('spinner-grow spinner-grow-sm')
         }, 2000);
         setTimeout(printJSPDF, 300);
     })
@@ -225,7 +225,7 @@
 
         doc.text(18, 135, 'Descripcion problema')
         doc.setFontSize(6)
-        doc.text(78, 135, `<%= data.descripcionProblema%>`)
+        doc.text(78, 135, '<%= data.descripcionProblema%>')
         doc.line(18, 138, 200, 137)
 
         doc.setFontSize(10)
@@ -320,10 +320,10 @@
         let today = new Date();
         let formattedDate = today.toLocaleDateString("es-MX");
         doc.setFontSize(8)
-        doc.text(10, 270, `Fecha de impresion: ${formattedDate}`)
+        doc.text(10, 270, 'Fecha de impresion:'+ formattedDate)
 
 
-         doc.save(`Andon_<%= data.id_andon%>_${formattedDate}.pdf`);
+         doc.save('Andon_<%= data.id_andon%>_'+formattedDate+'.pdf');
 
         //window.open(doc.output('bloburl'))
     }
@@ -331,6 +331,6 @@
 
 </script>
 </div>
-</body>
+
 
 </html>
