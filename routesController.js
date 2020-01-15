@@ -185,7 +185,9 @@ controller.guardar_andon_POST = (req, res) => {
                                     id_andon,
                                     area,
                                     subarea,
-                                    estacion
+                                    estacion,
+                                    empleado,
+                                    gafete
                                 }
                             });
                         });

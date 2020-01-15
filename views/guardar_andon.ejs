@@ -3,6 +3,19 @@
 <% include navbar %>
 
 <div class="col-xl-12 jumbotron jumbotron-fluid animated bounceInDown">
+
+    <div class="row">
+
+        <div class="col-lg-11 text-right">
+            <div id="printButton">
+                <button type="button" id="printJSPDFButton" class="btn btn-warning">
+                    <span id="printloading" role="status" style="width: 3rem; height: 3rem;"></span>
+                    <span class="fas fa-print " style="font-size: 3rem;"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <img src="/img/TristoneLogo.png" class="rounded mx-auto d-block" alt="Tristone Flowtech">
         <h1 class="display-4 text-center">Sistema Andon</h1>
@@ -55,13 +68,219 @@
         </div>
     </div>
 </div>
+
+</div>
+</body>
+<% include footer %>
 <script>
     if (window.history.replaceState) {
         window.history.replaceState(null, null, '/');
     }
 </script>
-<% include footer %>
-</div>
-</body>
+<script type="text/javascript" src="/js/imagenes.js"></script>
+<script>
+    $('#printJSPDFButton').click(function () {
+        $('#printloading').addClass('spinner-grow spinner-grow-sm');
+
+        setTimeout(() => {
+            $('#printloading').removeClass('spinner-grow spinner-grow-sm');
+        }, 2000);
+        setTimeout(printJSPDF, 300);
+    })
+
+    let today = new Date();
+    let formattedDate = today.toLocaleDateString("es-MX");
+
+    function printJSPDF() {
+        var doc = new jsPDF('portrait', '', 'letter');
+
+        //  Imagen barra
+        doc.addImage(logo, 'PNG', 90, 5, 45, 30, undefined, 'FAST')
+
+        // Texto Titulo
+        doc.setFontSize(25)
+        doc.setFont("helvatica");
+        doc.text(85, 45, 'Sistema Andon')
+
+
+        let colorSuccess = doc.setFillColor(40, 167, 69);
+        let colorInfo = doc.setFillColor(23, 162, 184);
+        let colorDanger = doc.setFillColor(220, 63, 69);
+
+        doc.setFillColor(220, 63, 69);
+
+
+        ///////////////////////////////
+        doc.rect(14, 48, 190, 8, 'F');
+
+
+        // Texto en Square 
+        doc.setFontSize(12)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(255, 255, 255);
+        ///////////////////////////////
+        doc.text(100, 53, 'Andon Creada')
+        ///////////////////////////////
+
+        // Linea separador
+        doc.setDrawColor(171, 171, 171);
+        doc.setLineWidth(.1);
+
+
+        // Texto "TABLA" 
+        doc.setFontSize(10)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(0, 0, 0);
+
+        doc.text(18, 65, 'ID')
+        doc.text(78, 65, '<%= data.id_andon%>')
+        doc.line(18, 67, 200, 67)
+
+        doc.text(18, 75, 'Nombre del creador')
+        doc.text(78, 75, '<%= data.empleado%>')
+        doc.line(18, 77, 200, 77)
+
+        doc.text(18, 85, 'Clave de Cierre')
+        doc.text(78, 85, '<%= data.clave%>')
+        doc.line(18, 87, 200, 87)
+
+        doc.text(18, 95, 'Problema')
+        doc.text(78, 95, '<%= data.problema%>')
+        doc.line(18, 97, 200, 97)
+
+        doc.text(18, 105, 'Area')
+        doc.text(78, 105, '<%= data.area%>')
+        doc.line(18, 107, 200, 107)
+
+        doc.text(18, 115, 'Area Afectada')
+        doc.text(78, 115, '<%= data.subarea%>')
+        doc.line(18, 117, 200, 117)
+
+        doc.text(18, 125, 'Estacion')
+        doc.text(78, 125, '<%= data.estacion%>')
+        doc.line(18, 127, 200, 127)
+
+
+        doc.text(18, 135, 'Descripcion problema')
+        doc.setFontSize(6)
+        doc.text(78, 135, `<%= data.descripcion%>`)
+        doc.line(18, 138, 200, 137)
+
+        doc.setFontSize(10)
+        doc.text(18, 145, 'Fecha de generacion')
+        doc.text(78, 145, '<%=Date() %>')
+        doc.line(18, 147, 200, 147)
+
+
+        //Linea punteada
+        doc.setLineWidth(1)
+        doc.setLineDash([1]);
+        doc.line(2, 155, 230, 155);
+
+        doc.setFontSize(8)
+        doc.text(10, 151, `Fecha de impresion: ${formattedDate}`)
+
+        doc.setLineDash([]);
+        ///////////////////////////////
+        ///////////////////////////////
+
+        // Square 
+
+        doc.setFillColor(52, 58, 64);
+        doc.rect(14, 157, 190, 8, 'F');
+
+        // Texto en Square 
+        doc.setFontSize(12)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(255, 255, 255);
+        ///////////////////////////////
+        doc.text(100, 162, '<%=data.departamento%>')
+        ///////////////////////////////
+
+        // Square 
+        doc.setFillColor(220, 63, 69);
+        doc.rect(14, 165, 190, 8, 'F');
+
+        // Texto en Square 
+        doc.setFontSize(12)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(255, 255, 255);
+        doc.text(95, 170, 'Andon Creada')
+
+
+        // Texto "TABLA" 
+        doc.setFontSize(10)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(0, 0, 0);
+
+        doc.text(18, 182, 'ID')
+        doc.text(78, 182, '<%= data.id_andon%>')
+        doc.line(18, 184, 200, 184)
+
+        doc.text(18, 192, 'Nombre del Creador')
+        doc.text(78, 192, '<%=data.empleado%>')
+        doc.line(18, 194, 200, 194)
+
+        doc.text(18, 202, 'Numero de Empleado')
+        doc.text(78, 202, '<%=data.gafete%>')
+        doc.line(18, 204, 200, 204)
+
+        ///////////////////////////////
+        ///////////////////////////////
+
+
+        // Texto "TABLA" 
+        doc.setFontSize(10)
+        doc.setFont("times");
+        doc.setFontStyle("normal");
+        doc.setTextColor(0, 0, 0);
+
+        doc.text(18, 212, 'Problema')
+        doc.text(78, 212, '<%= data.problema%>')
+        doc.line(18, 214, 200, 214)
+
+        doc.text(18, 222, 'Area')
+        doc.text(78, 222, '<%= data.area%>')
+        doc.line(18, 224, 200, 224)
+
+        doc.text(18, 232, 'Area Afectada')
+        doc.text(78, 232, '<%= data.subarea%>')
+        doc.line(18, 234, 200, 234)
+
+        doc.text(18, 242, 'Estacion')
+        doc.text(78, 242, '<%= data.estacion%>')
+        doc.line(18, 246, 200, 246)
+
+        doc.text(18, 252, 'Descripcion problema')
+        doc.setFontSize(6)
+        doc.text(78, 252, '<%= data.descripcion%>')
+        doc.line(18, 256, 200, 256)
+
+        doc.setFontSize(10)
+        doc.text(18, 262, 'Fecha generacion')
+        doc.text(78, 262, '<%= Date()%>')
+        doc.line(18, 264, 200, 264)
+
+        ///////////////////////////////
+        ///////////////////////////////
+
+        doc.setFontSize(8)
+        doc.text(10, 271, `Fecha de impresion: ${formattedDate}`)
+
+        //Imprimir directamente sin descargar, se requieren las dos lineas siguientes:
+        doc.autoPrint();
+        doc.output('dataurlnewwindow');
+        // doc.save(`Andon_<%= data.id_andon%>_${formattedDate}.pdf`);
+
+        //window.open(doc.output('bloburl'))
+    }
+
+
+</script>
 
 </html>
