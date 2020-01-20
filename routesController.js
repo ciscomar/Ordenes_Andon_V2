@@ -1027,7 +1027,7 @@ controller.descargar_andons_GET = (req, res) => {
         for (let i = 0; i < andons.length; i++) {
 
             let date = andons[i].fecha_inicio
-            let formatted_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
+            let formatted_date =   (date.getMonth() + 1) +"/"+  date.getDate() +"/"+ date.getFullYear()
             
             rows.push("row" + [i])
 
@@ -1127,6 +1127,7 @@ controller.descargar_andons_GET = (req, res) => {
         nameColG.width = 10
         nameColH.width = 16
         nameColI.width = 10
+        nameColI.numFmt = "*mm/dd/yyyy"
         nameColJ.width = 17
         nameColK.width = 9
 
@@ -1139,7 +1140,7 @@ controller.descargar_andons_GET = (req, res) => {
         date = day + "_" + month + "_" + year;
         date = `${day}_${month}_${year}`
 
-        res.attachment(`Andons${date}.xlsx`)
+        res.attachment(`Andons_${date}.xlsx`)
         workbook.xlsx.write(res).then(function () {
             res.end()
         });
