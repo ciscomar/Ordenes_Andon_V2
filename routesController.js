@@ -32,42 +32,42 @@ controller.login = (req, res) => {
             });
         });
     } else
-    if (loginId == 'crear_andon') {
-        funcionE.empleadosAccessAll(1, '>=', (err, result) => {
+        if (loginId == 'crear_andon') {
+            funcionE.empleadosAccessAll(1, '>=', (err, result) => {
 
-            res.render('login.ejs', {
-                data: loginId,
-                data2: result
+                res.render('login.ejs', {
+                    data: loginId,
+                    data2: result
+                });
             });
-        });
-    } else
-    if (loginId == 'cerrar_andon') {
-        funcionE.empleadosAccessAll(2, '>=', (err, result) => {
+        } else
+            if (loginId == 'cerrar_andon') {
+                funcionE.empleadosAccessAll(2, '>=', (err, result) => {
 
-            res.render('login.ejs', {
-                data: loginId,
-                data2: result
-            });
-        });
-    } else
-    if (loginId == 'historial') {
-        funcionE.empleadosAccessAll(1, '>=', (err, result) => {
+                    res.render('login.ejs', {
+                        data: loginId,
+                        data2: result
+                    });
+                });
+            } else
+                if (loginId == 'historial') {
+                    funcionE.empleadosAccessAll(1, '>=', (err, result) => {
 
-            res.render('login.ejs', {
-                data: loginId,
-                data2: result
-            });
-        });
-    } else
-    if (loginId == 'alta_acceso') {
-        funcionE.empleadosAccessAll(3, '=', (err, result) => {
+                        res.render('login.ejs', {
+                            data: loginId,
+                            data2: result
+                        });
+                    });
+                } else
+                    if (loginId == 'alta_acceso') {
+                        funcionE.empleadosAccessAll(3, '=', (err, result) => {
 
-            res.render('login.ejs', {
-                data: loginId,
-                data2: result
-            });
-        });
-    }
+                            res.render('login.ejs', {
+                                data: loginId,
+                                data2: result
+                            });
+                        });
+                    }
 
 
 };
@@ -327,27 +327,31 @@ controller.andons_GET = (req, res) => {
                                 if (err) throw err;
                                 funcion.controllerCountAndonArea('ensamble', 4, (err, result8) => {
                                     if (err) throw err;
+                                    funcionE.empleadosAll((err, emp) => {
+                                        if (err) throw err;
 
-                                    andonAbiertas = result2[0].abiertas
-                                    andonAtendidas = result3[0].atendidas
-                                    andonCerradas = result4[0].cerradas
-                                    andonExtrusion = result5[0].extrusion
-                                    andonVulca = result6[0].vulca
-                                    andonEstampado = result7[0].estampado
-                                    andonEnsamble = result8[0].ensamble
-                                    res.render('andons.ejs', {
-                                        data: result,
-                                        data2: {
-                                            andonAbiertas,
-                                            andonAtendidas,
-                                            andonCerradas
-                                        },
-                                        data3: {
-                                            andonExtrusion,
-                                            andonVulca,
-                                            andonEstampado,
-                                            andonEnsamble
-                                        }
+                                        andonAbiertas = result2[0].abiertas
+                                        andonAtendidas = result3[0].atendidas
+                                        andonCerradas = result4[0].cerradas
+                                        andonExtrusion = result5[0].extrusion
+                                        andonVulca = result6[0].vulca
+                                        andonEstampado = result7[0].estampado
+                                        andonEnsamble = result8[0].ensamble
+                                        res.render('andons.ejs', {
+                                            data: result,
+                                            data2: {
+                                                andonAbiertas,
+                                                andonAtendidas,
+                                                andonCerradas
+                                            },
+                                            data3: {
+                                                andonExtrusion,
+                                                andonVulca,
+                                                andonEstampado,
+                                                andonEnsamble,
+                                            },
+                                            emp
+                                        });
                                     });
                                 });
                             });
@@ -476,7 +480,7 @@ controller.cambio_andon_POST = (req, res) => {
             if (accionTomada == "Atendida") {
 
                 clave_cierre = '';
-                funcion.controllerUpdateAndonA(accionTomada, actividades, formatted_current_date,minutos, nombreEmpleado, id_andon, (err, result) => {
+                funcion.controllerUpdateAndonA(accionTomada, actividades, formatted_current_date, minutos, nombreEmpleado, id_andon, (err, result) => {
                     if (err) throw err;
 
                     res.render('cambio_andon.ejs', {
@@ -1013,7 +1017,8 @@ controller.descargar_andons_GET = (req, res) => {
 
 
     funcion.controllerTablaAndon((err, andons) => {
-
+        funcionE.empleadosAll((err,emp)=>{
+            console.log(emp);
 
 
         // create workbook & add worksheet
@@ -1026,9 +1031,17 @@ controller.descargar_andons_GET = (req, res) => {
         for (let i = 0; i < andons.length; i++) {
 
             let date = andons[i].fecha_inicio
-            let formatted_date =   (date.getMonth() + 1) +"/"+  date.getDate() +"/"+ date.getFullYear()
-            
+            let formatted_date = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear()
+
             rows.push("row" + [i])
+
+
+            for (let y = 0; y < emp.length; y++) {
+                if (emp[y].emp_id == andons[i].reporto) {
+                    emp_nombre = emp[y].emp_nombre
+                }
+                
+            }
 
             row = [
                 andons[i].id_andon,
@@ -1038,7 +1051,7 @@ controller.descargar_andons_GET = (req, res) => {
                 andons[i].subarea,
                 andons[i].estacion,
                 andons[i].descripcion_problema,
-                andons[i].reporto,
+                emp_nombre,
                 formatted_date,
                 andons[i].tiempo_muerto,
                 andons[i].status,
@@ -1061,74 +1074,74 @@ controller.descargar_andons_GET = (req, res) => {
                 showRowStripes: true,
             },
             columns: [{
-                    name: 'ID',
-                    filterButton: true,
-                    key: 'id'
-                },
-                {
-                    name: 'Departamento',
-                    filterButton: true
-                },
-                {
-                    name: 'Problema',
-                    filterButton: true
-                },
-                {
-                    name: 'Area',
-                    filterButton: true
-                },
-                {
-                    name: 'Area Afectada',
-                    filterButton: true
-                },
-                {
-                    name: 'Estacion',
-                    filterButton: true
-                },
-                {
-                    name: 'Descripcion de la falla',
-                    filterButton: true
-                },
-                {
-                    name: 'Reportado por',
-                    filterButton: true
-                },
-                {
-                    name: 'Fecha',
-                    filterButton: true
-                },
-                {
-                    name: 'Tiempo Muerto',
-                    filterButton: true
-                },
-                {
-                    name: 'Estatus',
-                    filterButton: true
-                },
-                {
-                    name: 'Atendida Por',
-                    filterButton: true
-                },
-                {
-                    name: 'Fecha Hora Atendida',
-                    filterButton: true
-                },
-                {
-                    name: 'Atendida comentario',
-                    filterButton: true
-                },
-                {
-                    name: 'Cerrada Por',
-                    filterButton: true
-                },
-                {
-                    name: 'Fecha Hora Cierre',
-                    filterButton: true
-                },
-                {
-                    name: 'Cerrada comentario',
-                    filterButton: true
-                }
+                name: 'ID',
+                filterButton: true,
+                key: 'id'
+            },
+            {
+                name: 'Departamento',
+                filterButton: true
+            },
+            {
+                name: 'Problema',
+                filterButton: true
+            },
+            {
+                name: 'Area',
+                filterButton: true
+            },
+            {
+                name: 'Area Afectada',
+                filterButton: true
+            },
+            {
+                name: 'Estacion',
+                filterButton: true
+            },
+            {
+                name: 'Descripcion de la falla',
+                filterButton: true
+            },
+            {
+                name: 'Reportado por',
+                filterButton: true
+            },
+            {
+                name: 'Fecha',
+                filterButton: true
+            },
+            {
+                name: 'Tiempo Muerto',
+                filterButton: true
+            },
+            {
+                name: 'Estatus',
+                filterButton: true
+            },
+            {
+                name: 'Atendida Por',
+                filterButton: true
+            },
+            {
+                name: 'Fecha Hora Atendida',
+                filterButton: true
+            },
+            {
+                name: 'Atendida comentario',
+                filterButton: true
+            },
+            {
+                name: 'Cerrada Por',
+                filterButton: true
+            },
+            {
+                name: 'Fecha Hora Cierre',
+                filterButton: true
+            },
+            {
+                name: 'Cerrada comentario',
+                filterButton: true
+            }
             ],
             rows: rows0,
         });
@@ -1172,7 +1185,7 @@ controller.descargar_andons_GET = (req, res) => {
         nameColP.width = 22
         nameColP.numFmt = "mm/dd/yyyy"
         nameColQ.width = 22
-        
+
 
 
         //Current Date
@@ -1188,7 +1201,7 @@ controller.descargar_andons_GET = (req, res) => {
             res.end()
         });
     })
-
+ })
 }
 
 module.exports = controller;

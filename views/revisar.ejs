@@ -55,10 +55,6 @@
                             <td><%= data.nombreEmpleado%></td>
                         </tr>
                         <tr>
-                            <td>Numero de empleado</td>
-                            <td><%= data.numeroEmpleado%></td>
-                        </tr>
-                        <tr>
                             <td>Problema</td>
                             <td><%= data.problema%></td>
                         </tr>
@@ -202,36 +198,36 @@
         doc.text(78, 75, '<%= data.nombreEmpleado%>')
         doc.line(18, 77, 200, 77)
 
-        doc.text(18, 85, 'Numero de empleado')
-        doc.text(78, 85, '<%= data.numeroEmpleado%>')
+        // doc.text(18, 85, 'Numero de empleado')
+        // doc.text(78, 85, '<%= data.numeroEmpleado%>')
+        // doc.line(18, 87, 200, 87)
+
+        doc.text(18, 85, 'Problema')
+        doc.text(78, 85, '<%= data.problema%>')
         doc.line(18, 87, 200, 87)
 
-        doc.text(18, 95, 'Problema')
-        doc.text(78, 95, '<%= data.problema%>')
+        doc.text(18, 95, 'Area')
+        doc.text(78, 95, '<%= data.area%>')
         doc.line(18, 97, 200, 97)
 
-        doc.text(18, 105, 'Area')
-        doc.text(78, 105, '<%= data.area%>')
+        doc.text(18, 105, 'Area Afectada')
+        doc.text(78, 105, '<%= data.subarea%>')
         doc.line(18, 107, 200, 107)
 
-        doc.text(18, 115, 'Area Afectada')
-        doc.text(78, 115, '<%= data.subarea%>')
+        doc.text(18, 115, 'Estacion')
+        doc.text(78, 115, '<%= data.estacion%>')
         doc.line(18, 117, 200, 117)
 
-        doc.text(18, 125, 'Estacion')
-        doc.text(78, 125, '<%= data.estacion%>')
-        doc.line(18, 127, 200, 127)
 
-
-        doc.text(18, 135, 'Descripcion problema')
+        doc.text(18, 125, 'Descripcion problema')
         doc.setFontSize(6)
-        doc.text(78, 135, '<%= data.descripcionProblema%>')
-        doc.line(18, 138, 200, 137)
+        doc.text(78, 125, '<%= data.descripcionProblema%>')
+        doc.line(18, 128, 200, 127)
 
         doc.setFontSize(10)
-        doc.text(18, 145, 'Fecha de generacion')
-        doc.text(78, 145, '<%= data.creacionFecha%>')
-        doc.line(18, 147, 200, 147)
+        doc.text(18, 135, 'Fecha de generacion')
+        doc.text(78, 135, '<%= data.creacionFecha%>')
+        doc.line(18, 137, 200, 137)
 
 
         ///////////////////////////////
