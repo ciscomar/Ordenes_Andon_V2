@@ -60,7 +60,6 @@
                                 <option value="" selected id="selectestacion">Seleccionar</option>
                             <%if(data8) { %>                               
                             <% for (var i = 0; i < data8.length; i++) { %>
-                                
                             <option value="<%= data8[i].id_subarea %>"><%= data8[i].estacion %></option>
                             <label type="text" class="form-control" id="inestacion" name="inestacion" hidden></label>
                             <% } %>
@@ -107,6 +106,7 @@
     $("#subarea").change(function () {
         if ($('#subarea').val() > 11) {
             $('#estacion').prop("disabled", false);
+            $("#estacion").attr("required",true)
   
         }
         filter(this)

@@ -89,10 +89,10 @@
                     <td><%= formatted_date %></td>
 
                     <td>
-                        <%if(data[i].status !='Cerrada') { %>
-                        <div class="time-elapsed"></div>
-                        <div class="date_start_time" data-date-time="<%= data[i].fecha_inicio %>"></div>
-                        <div class="alerts-wrapper"></div>
+                        <%if(data[i].status =='Abierta') { %>
+                            <div class="time-elapsed"></div>
+                            <div class="date_start_time" data-date-time="<%= data[i].fecha_inicio %>"></div>
+                            <div class="alerts-wrapper"></div>   
                         <% }else { %>
                         <%= data[i].tiempo_muerto %> minutos
                         <% } %>

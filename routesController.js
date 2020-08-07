@@ -335,7 +335,6 @@ controller.andons_GET = (req, res) => {
                                     andonVulca = result6[0].vulca
                                     andonEstampado = result7[0].estampado
                                     andonEnsamble = result8[0].ensamble
-
                                     res.render('andons.ejs', {
                                         data: result,
                                         data2: {
@@ -477,7 +476,7 @@ controller.cambio_andon_POST = (req, res) => {
             if (accionTomada == "Atendida") {
 
                 clave_cierre = '';
-                funcion.controllerUpdateAndonA(accionTomada, actividades, formatted_current_date, nombreEmpleado, id_andon, (err, result) => {
+                funcion.controllerUpdateAndonA(accionTomada, actividades, formatted_current_date,minutos, nombreEmpleado, id_andon, (err, result) => {
                     if (err) throw err;
 
                     res.render('cambio_andon.ejs', {
@@ -788,7 +787,7 @@ controller.dashboard_POST = (req, res) => {
 
                             funcion.controllerDashSeleccionArea(selectedArea, (err, result7) => {
                                 if (err) throw err;
-
+                                console.log(result6);
                                 andonAbiertas = result2[0].abiertas
                                 andonAtendidas = result3[0].atendidas
                                 andonCerradas = result4[0].cerradas
@@ -1042,7 +1041,13 @@ controller.descargar_andons_GET = (req, res) => {
                 andons[i].reporto,
                 formatted_date,
                 andons[i].tiempo_muerto,
-                andons[i].status
+                andons[i].status,
+                andons[i].usuario_atendida,
+                andons[i].fecha_hora_atendida,
+                andons[i].acciones_atendida,
+                andons[i].usuario_cierre,
+                andons[i].fecha_hora_cierre,
+                andons[i].acciones_cierre
             ]
             rows0.push(row)
         }
@@ -1100,10 +1105,33 @@ controller.descargar_andons_GET = (req, res) => {
                     name: 'Estatus',
                     filterButton: true
                 },
+                {
+                    name: 'Atendida Por',
+                    filterButton: true
+                },
+                {
+                    name: 'Fecha Hora Atendida',
+                    filterButton: true
+                },
+                {
+                    name: 'Atendida comentario',
+                    filterButton: true
+                },
+                {
+                    name: 'Cerrada Por',
+                    filterButton: true
+                },
+                {
+                    name: 'Fecha Hora Cierre',
+                    filterButton: true
+                },
+                {
+                    name: 'Cerrada comentario',
+                    filterButton: true
+                }
             ],
             rows: rows0,
         });
-
 
         //Configuracion de primer hoja columnas
         let nameColA = worksheet.getColumn('A');
@@ -1117,6 +1145,12 @@ controller.descargar_andons_GET = (req, res) => {
         let nameColI = worksheet.getColumn('I');
         let nameColJ = worksheet.getColumn('J');
         let nameColK = worksheet.getColumn('K');
+        let nameColL = worksheet.getColumn('L');
+        let nameColM = worksheet.getColumn('M');
+        let nameColN = worksheet.getColumn('N');
+        let nameColO = worksheet.getColumn('O');
+        let nameColP = worksheet.getColumn('P');
+        let nameColQ = worksheet.getColumn('Q');
         nameColA.numFmt = '0'
         nameColA.width = 5
         nameColB.width = 16
@@ -1127,9 +1161,18 @@ controller.descargar_andons_GET = (req, res) => {
         nameColG.width = 10
         nameColH.width = 16
         nameColI.width = 10
-        nameColI.numFmt = "*mm/dd/yyyy"
+        nameColI.numFmt = "mm/dd/yyyy"
         nameColJ.width = 17
         nameColK.width = 9
+        nameColL.width = 16
+        nameColM.width = 22
+        nameColM.numFmt = "mm/dd/yyyy"
+        nameColN.width = 22
+        nameColO.width = 16
+        nameColP.width = 22
+        nameColP.numFmt = "mm/dd/yyyy"
+        nameColQ.width = 22
+        
 
 
         //Current Date

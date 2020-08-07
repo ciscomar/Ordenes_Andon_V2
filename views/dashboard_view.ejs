@@ -157,6 +157,7 @@
                     <tbody>
                         <tr>
                             <% for(var i = 0; i < data.andonSeleccion.length;i++ ){ %>
+                                <% console.log(data.andonSeleccion[i].tiempo_muerto) %> 
                             <td><%= data.andonSeleccion[i].andon_fallas %></td>
                             <td><%= data.andonSeleccion[i].problemas_comunes_count %></td>
                             <td><%= Math.floor(data.andonSeleccion[i].tiempo_muerto ); %></td>

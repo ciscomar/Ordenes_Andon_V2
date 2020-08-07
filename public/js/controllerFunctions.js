@@ -329,11 +329,12 @@ funcion.controllerInsertAndon = (id_dep, id_prob, id_area, id_subarea, id_estaci
 
 }
 
-funcion.controllerUpdateAndonA = (accionTomada, actividades, formatted_current_date, nombreEmpleado, id_andon, callback) => {
+funcion.controllerUpdateAndonA = (accionTomada, actividades, formatted_current_date, minutos,nombreEmpleado, id_andon, callback) => {
     db.query(`UPDATE andon SET 
     status= "${accionTomada}",
     acciones_atendida= "${actividades}" ,
     fecha_hora_atendida= "${formatted_current_date}" ,
+    tiempo_muerto= "${minutos}",
     usuario_atendida= "${nombreEmpleado}" 
     WHERE id_andon = ${id_andon}`, function (err, result, fields) {
             if (err) {
@@ -347,20 +348,38 @@ funcion.controllerUpdateAndonA = (accionTomada, actividades, formatted_current_d
 }
 
 funcion.controllerUpdateAndonC = (accionTomada, actividades, formatted_current_date, minutos, nombreEmpleado, id_andon, callback) => {
-    db.query(`UPDATE andon SET 
-    status= "${accionTomada}",
-    fecha_hora_cierre= "${formatted_current_date}",
-    usuario_cierre= "${nombreEmpleado}",
-    acciones_cierre= "${actividades}",
-    tiempo_muerto= "${minutos}"
-    WHERE id_andon = ${id_andon}`, function (err, result, fields) {
-            if (err) {
-                callback(err, null);
-            } else {
+    console.log(minutos);
+    if (minutos > 0) {
+        db.query(`UPDATE andon SET 
+        status= "${accionTomada}",
+        fecha_hora_cierre= "${formatted_current_date}",
+        usuario_cierre= "${nombreEmpleado}",
+        acciones_cierre= "${actividades}"
+        WHERE id_andon = ${id_andon}`, function (err, result, fields) {
+                if (err) {
+                    callback(err, null);
+                } else {
+    
+                    callback(null, result);
+                }
+            }) 
+    }else{
+        db.query(`UPDATE andon SET 
+        status= "${accionTomada}",
+        fecha_hora_cierre= "${formatted_current_date}",
+        usuario_cierre= "${nombreEmpleado}",
+        acciones_cierre= "${actividades}",
+        tiempo_muerto= "${minutos}"
+        WHERE id_andon = ${id_andon}`, function (err, result, fields) {
+                if (err) {
+                    callback(err, null);
+                } else {
+    
+                    callback(null, result);
+                }
+            })
+    }
 
-                callback(null, result);
-            }
-        })
 
 }
 
