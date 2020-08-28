@@ -56,14 +56,10 @@
 
                     <div class="form-group  col-lg-6">
                         <label for="Titulo">Estacion</label>
-                        <select type="text" class="form-control" id="estacion" name="estacion" disabled>
-                                <option value="" selected id="selectestacion">Seleccionar</option>
-                            <%if(data8) { %>                               
-                            <% for (var i = 0; i < data8.length; i++) { %>
-                            <option value="<%= data8[i].id_subarea %>"><%= data8[i].estacion %></option>
-                            <label type="text" class="form-control" id="inestacion" name="inestacion" hidden></label>
-                            <% } %>
-                            <% } %>
+                        <select type="text" class="form-control" id="estacion" name="estacion" onkeypress="disable()"
+                            disabled>
+                            <option value="" selected id="selectestacion">Seleccionar</option>
+
                         </select>
                         <input type="text" class="form-control" id="inestacion" value="na" name="inestacion" hidden>
                     </div>
@@ -106,13 +102,55 @@
     $("#subarea").change(function () {
         if ($('#subarea').val() > 11) {
             $('#estacion').prop("disabled", false);
-            $("#estacion").attr("required",true)
-  
+            $("#estacion").attr("required", true)
+
         }
-        filter(this)
-        var optionselect = $("#selectestacion");
-        $("#selectestacion").show();
-        $('#selectestacion').prop('selected', true)
+        //$('#estacion').find('option').remove().end()
+        $('#estacion').find('option').not(':first').remove();
+
+        // filter(this)
+        // var optionselect = $("#selectestacion");
+        // $("#selectestacion").show();
+        // $('#selectestacion').prop('selected', true)
+
+        let xhr = new XMLHttpRequest();
+
+
+        xhr.open('GET', `/estaciones/${$('#subarea').val()}`, true);
+
+
+        xhr.onload = function () {
+            console.log(this.status);
+            if (this.status == 200) {
+                info = JSON.parse(this.responseText)
+
+
+                for (let i = 0; i < info.length; i++) {
+
+                    $('#estacion').append($('<option>', {
+                        value: info[i].id_estacion,
+                        text: info[i].estacion
+                    }));
+                }
+
+
+            } else if (this.status = 404) {
+
+            }
+        }
+
+
+        xhr.onerror = function () {
+            console.log('Request Error...');
+        }
+
+        xhr.send();
+
+
+
+
+
+
     });
 
     function filter(elem) {
@@ -123,6 +161,7 @@
 
         options.hide();
         var op = options.filter(function () {
+
             return value == $(this).val();
         }).show();
 
@@ -132,10 +171,17 @@
     }
 
 
+
+
     $("#estacion").change(function (e) {
 
-        $("#inestacion").val(e.target.selectedIndex)
+        $("#inestacion").val($("#estacion").val())
+
+
     });
+
+
+
 
 
 </script>

@@ -134,6 +134,21 @@ controller.crear_andon2_POST = (req, res) => {
 };
 
 
+
+controller.estaciones_GET = (req, res) => {
+
+
+    subarea = req.params.id;
+
+    funcion.estaciones(subarea, (err, result) => {
+        if (err) throw err;
+
+        res.send(result);
+    });
+
+};
+
+
 //POST a guardar_andon despues de crear andon2
 controller.guardar_andon_POST = (req, res) => {
 

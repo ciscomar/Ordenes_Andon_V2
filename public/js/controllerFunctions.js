@@ -199,6 +199,20 @@ funcion.controllerEstaciones = (callback) => {
 
 }
 
+
+funcion.estaciones = (subarea,callback) => {
+    db.query(`SELECT * FROM andon_estaciones WHERE id_subarea=${subarea}`, function (err, result, fields) {
+            if (err) {
+                callback(err, null);
+            } else {
+
+              
+                callback(null, result);
+            }
+        })
+
+}
+
 funcion.controllerEstacionNombre = (id_estacion, callback) => {
     db.query(`SELECT estacion FROM andon_estaciones WHERE id_estacion='${id_estacion}'`, function (err, result, fields) {
         if (err) {
